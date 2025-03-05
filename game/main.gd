@@ -7,4 +7,3 @@ func _ready() -> void:
 	s.add(30)
 	print(s.get_total())
 	s.reset()
-
