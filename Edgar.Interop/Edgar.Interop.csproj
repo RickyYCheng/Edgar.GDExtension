@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<PublishAot>true</PublishAot>
+	</PropertyGroup>
+	
+	<Target Name="CopyNativeFilesPublish" AfterTargets="Publish">
+		<ItemGroup>
+			<NativeFiles Include="bin/Release/$(TargetFramework)/$(RuntimeIdentifier)/native/*.*" />
+		</ItemGroup>
+		<Copy SourceFiles="@(NativeFiles)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
+	</Target>
+
+</Project>

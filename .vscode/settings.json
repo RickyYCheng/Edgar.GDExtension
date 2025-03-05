@@ -122,4 +122,5 @@
         "**/*.ilk": true,
         "**/*.pdb": true
     },
+    "cmake.sourceDirectory": "C:/Users/Ricky/source/git/Edgar.GDExtension/godot-cpp",
 }
