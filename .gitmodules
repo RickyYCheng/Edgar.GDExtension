@@ -2,3 +2,6 @@
 	path = godot-cpp
 	url = https://github.com/godotengine/godot-cpp.git
 	branch = master
+[submodule "Edgar.Aot"]
+	path = Edgar.Aot
+	url = https://github.com/RickyYCheng/Edgar.Aot
