@@ -1,6 +1,6 @@
 //© Copyright 2014-2022, Juan Linietsky, Ariel Manzur and the Godot community (CC-BY 3.0)
-#ifndef SUMMATOR_CLASS_H
-#define SUMMATOR_CLASS_H
+#ifndef DOORGRID2D_CLASS_H
+#define DOORGRID2D_CLASS_H
 
 // We don't need windows.h in this plugin but many others do and it throws up on itself all the time
 // So best to include it and make sure CI warns us when we use something Microsoft took for their own goals....
@@ -12,22 +12,22 @@
 
 using namespace godot;
 
-class Summator : public RefCounted
-{
-    GDCLASS(Summator, RefCounted);
+class DoorGrid2D : public RefCounted {
+    GDCLASS(DoorGrid2D, RefCounted);
 
-    int count;
+    Vector2i from;
+    Vector2i to;
 
 protected:
     static void _bind_methods();
 
 public:
-    Summator();
-    ~Summator();
-
-    void add(int p_value);
-    void reset();
-    int get_total() const;
+    DoorGrid2D();
+    ~DoorGrid2D();
+    void _init(Vector2i from, Vector2i to);
+    
+    Vector2i get_from() const;
+    Vector2i get_to() const;
 };
 
-#endif // SUMMATOR_CLASS_H
+#endif // DOORGRID2D_CLASS_H

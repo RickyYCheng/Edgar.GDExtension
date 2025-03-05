@@ -1,9 +1,10 @@
 #include "register_types.h"
-#include "summator.h"
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
+
+#include "door_grid_2d.h"
 
 using namespace godot;
 
@@ -12,7 +13,8 @@ void initialize_types(ModuleInitializationLevel p_level)
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	ClassDB::register_class<Summator>();
+	
+    ClassDB::register_class<DoorGrid2D>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {
