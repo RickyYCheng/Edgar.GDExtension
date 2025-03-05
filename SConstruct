@@ -26,12 +26,12 @@ if env["target"] in ["editor", "template_debug"]:
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        f"game/bin/libgdsummator.{env["platform"]}.{env["target"]}.framework/libgdsummator.{env["platform"]}.{env["target"]}",
+        f"game/bin/edgar.gdextension.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        f"game/bin/libgdsummator{env["suffix"]}{env["SHLIBSUFFIX"]}",
+        f"game/bin/edgar.gdextension{env["suffix"]}{env["SHLIBSUFFIX"]}",
         source=sources,
     )
 
