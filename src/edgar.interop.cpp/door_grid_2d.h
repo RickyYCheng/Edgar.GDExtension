@@ -28,6 +28,8 @@ protected:
 public:
     DoorGrid2D();
     ~DoorGrid2D();
+
+    static DoorGrid2D* cons(Vector2i from, Vector2i to);
 };
 
 #endif // DOORGRID2D_CLASS_H
