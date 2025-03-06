@@ -2,6 +2,8 @@
 import os
 import sys
 
+os.system("dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin")
+
 env = SConscript("godot-cpp/SConstruct")
 
 # For the reference:
@@ -13,30 +15,22 @@ env = SConscript("godot-cpp/SConstruct")
 # - LINKFLAGS are for linking flags
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-env.Append(CPPPATH=["src/"])
+env.Append(CPPPATH=["src/edgar.interop.cpp"])
 
-env.Append(LIBS=["Edgar.Interop"])
-env.Append(LIBPATH="game/bin")
-
-sources = Glob("src/*.cpp")
-
-if env["target"] in ["editor", "template_debug"]:
-    try:
-        doc_data = env.GodotCPPDocData("src/gen/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
-        sources.append(doc_data)
-        print("Class reference added.")
-    except AttributeError:
-        print("Not including class reference as we're targeting a pre-4.3 baseline.")
+sources = Glob("src/edgar.interop.cpp/*.cpp")
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        f"game/bin/edgar.gdextension.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
+        f"game/bin/Edgar.Interop.Cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        f"game/bin/edgar.gdextension{env["suffix"]}{env["SHLIBSUFFIX"]}",
+        f"game/bin/Edgar.Interop.Cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
         source=sources,
     )
+
+env.Append(LIBS=["Edgar.Interop.CSharp"])
+env.Append(LIBPATH="game/bin")
 
 Default(library)
