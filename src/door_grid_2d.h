@@ -24,12 +24,6 @@ protected:
 public:
     DoorGrid2D();
     ~DoorGrid2D();
-    void _init(Vector2i from, Vector2i to);
-    
-    Vector2i get_from() const;
-    Vector2i get_to() const;
-
-    int aot_add(int a, int b) const;
 };
 
 #endif // DOORGRID2D_CLASS_H
