@@ -6,6 +6,26 @@ using System.Runtime.InteropServices;
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void PrintDelegate(string str);
 
+public class CustomObject
+{
+    private readonly nint print_Ptr;
+
+    public CustomObject(IntPtr print_Ptr)
+    {
+        // to see collection: 
+        // alloc large memory like this without manually gc
+        // System.Collections.Generic.List<long> list = new System.Collections.Generic.List<long>(100000);
+        this.print_Ptr = print_Ptr;
+        var print = Marshal.GetDelegateForFunctionPointer<PrintDelegate>(print_Ptr);
+        print("C#> created");
+    }
+    ~CustomObject()
+    {
+        var print = Marshal.GetDelegateForFunctionPointer<PrintDelegate>(print_Ptr);
+        print("C#> freed");
+    }
+}
+
 public class Interop
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(aotsample_add))]
@@ -20,25 +40,19 @@ public class Interop
         
         print("Hello world from C#!");
     }
-    [UnmanagedCallersOnly(EntryPoint = nameof(alloc_csharp_obj))]
-    public static IntPtr alloc_csharp_obj()
+    [UnmanagedCallersOnly(EntryPoint = nameof(alloc_custom_obj))]
+    public static IntPtr alloc_custom_obj(IntPtr print_ptr)
     {
-        var obj = new object();
+        var obj = new CustomObject(print_ptr);
         var handle = GCHandle.Alloc(obj, GCHandleType.Pinned);
 
         return GCHandle.ToIntPtr(handle);
     }
-    [UnmanagedCallersOnly(EntryPoint = nameof(free_csharp_obj))]
-    public static void free_csharp_obj(IntPtr ptr)
+    [UnmanagedCallersOnly(EntryPoint = nameof(free_custom_obj))]
+    public static void free_custom_obj(IntPtr ptr)
     {
         var handle = GCHandle.FromIntPtr(ptr);
         handle.Free();
-    }
-    [UnmanagedCallersOnly(EntryPoint = nameof(is_obj_freed))]
-    public static bool is_obj_freed(IntPtr ptr)
-    {
-        var handle = GCHandle.FromIntPtr(ptr);
-        var isNull = handle.Target is null;
-        return isNull;
+        // GC.Collect(); // will print "freed" immediately
     }
 }

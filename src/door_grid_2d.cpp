@@ -8,20 +8,20 @@ using namespace godot;
 extern "C" {
     int aotsample_add(int a, int b);
     void aotsample_greeting(void* print_ptr);
-    void* alloc_csharp_obj();
-    void free_csharp_obj(void* obj);
-    bool is_obj_freed(void* obj);
+    void* alloc_custom_obj(void* print_ptr);
+    void free_custom_obj(void* obj);
+}
+
+void gdprint(const char* str) {
+    UtilityFunctions::print(str);
 }
 
 DoorGrid2D::DoorGrid2D() {
-    this->csharp_obj = alloc_csharp_obj();
-    UtilityFunctions::print("created");
+    this->csharp_obj = alloc_custom_obj(&gdprint);
 }
 
 DoorGrid2D::~DoorGrid2D() {
-    free_csharp_obj(this->csharp_obj);
-    if (is_obj_freed(this->csharp_obj))
-        UtilityFunctions::print("freed");
+    free_custom_obj(this->csharp_obj);
     this->csharp_obj = nullptr;
 }
 
