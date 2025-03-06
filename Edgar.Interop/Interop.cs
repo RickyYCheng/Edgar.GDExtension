@@ -3,11 +3,11 @@
 using System;
 using System.Runtime.InteropServices;
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void PrintDelegate(string str);
+
 public class Interop
 {
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void PrintDelegate(string str);
-
     [UnmanagedCallersOnly(EntryPoint = nameof(aotsample_add))]
     public static int aotsample_add(int a, int b)
     {
