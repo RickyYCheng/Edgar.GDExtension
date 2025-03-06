@@ -2,7 +2,9 @@
 import os
 import sys
 
-os.system("dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin")
+csharp_build_code = os.system("dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin")
+if csharp_build_code != 0:
+    sys.exit(1)
 
 env = SConscript("godot-cpp/SConstruct")
 
@@ -17,6 +19,9 @@ env = SConscript("godot-cpp/SConstruct")
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/edgar.interop.cpp"])
 
+env.Append(LIBS=["Edgar.Interop.CSharp"])
+env.Append(LIBPATH="game/bin")
+
 sources = Glob("src/edgar.interop.cpp/*.cpp")
 
 if env["platform"] == "macos":
@@ -29,8 +34,5 @@ else:
         f"game/bin/Edgar.Interop.Cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
         source=sources,
     )
-
-env.Append(LIBS=["Edgar.Interop.CSharp"])
-env.Append(LIBPATH="game/bin")
 
 Default(library)

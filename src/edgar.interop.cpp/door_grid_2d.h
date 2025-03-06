@@ -12,11 +12,15 @@
 
 using namespace godot;
 
+extern "C" {
+    void* csharp_obj_alloc_door_grid_2d(int x1, int y1, int x2, int y2);
+}
+
 class DoorGrid2D : public RefCounted {
     GDCLASS(DoorGrid2D, RefCounted);
 
 private:
-    void* csharp_obj;
+    void* csharp_obj_handle_Ptr;
 
 protected:
     static void _bind_methods();

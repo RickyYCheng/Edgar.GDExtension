@@ -1,7 +1,7 @@
 extends Node
 
 func _ready() -> void:
-	pass
+	DoorGrid2D.new()
 
 func _physics_process(delta: float) -> void:
-	DoorGrid2D.new()
+	pass

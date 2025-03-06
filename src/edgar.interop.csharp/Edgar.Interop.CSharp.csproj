@@ -12,4 +12,10 @@
 		<Copy SourceFiles="@(NativeFiles)" DestinationFolder="$(PublishDir)" SkipUnchangedFiles="true" />
 	</Target>
 
+	<ItemGroup>
+		<Compile Include="../../edgar.aot/src/Edgar/**/*.cs" Exclude="../../edgar.aot/src/Edgar/obj/**/*.*;../../edgar.aot/src/Edgar/bin/**/*.*">
+			<Link>Shared\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</Compile>
+	</ItemGroup>
+
 </Project>

@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edgar.Interop.CSharp", "edgar.interop.csharp\Edgar.Interop.CSharp.csproj", "{894596CB-238C-770B-E5D0-456C633EF7BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edgar", "..\edgar.aot\src\Edgar\Edgar.csproj", "{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{894596CB-238C-770B-E5D0-456C633EF7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{894596CB-238C-770B-E5D0-456C633EF7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{894596CB-238C-770B-E5D0-456C633EF7BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8538B30D-B0C5-4BB8-8FA9-C9388E0758E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
