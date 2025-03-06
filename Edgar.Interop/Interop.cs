@@ -20,4 +20,25 @@ public class Interop
         
         print("Hello world from C#!");
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(alloc_csharp_obj))]
+    public static IntPtr alloc_csharp_obj()
+    {
+        var obj = new object();
+        var handle = GCHandle.Alloc(obj, GCHandleType.Pinned);
+
+        return GCHandle.ToIntPtr(handle);
+    }
+    [UnmanagedCallersOnly(EntryPoint = nameof(free_csharp_obj))]
+    public static void free_csharp_obj(IntPtr ptr)
+    {
+        var handle = GCHandle.FromIntPtr(ptr);
+        handle.Free();
+    }
+    [UnmanagedCallersOnly(EntryPoint = nameof(is_obj_freed))]
+    public static bool is_obj_freed(IntPtr ptr)
+    {
+        var handle = GCHandle.FromIntPtr(ptr);
+        var isNull = handle.Target is null;
+        return isNull;
+    }
 }

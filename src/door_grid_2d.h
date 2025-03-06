@@ -15,8 +15,8 @@ using namespace godot;
 class DoorGrid2D : public RefCounted {
     GDCLASS(DoorGrid2D, RefCounted);
 
-    Vector2i from;
-    Vector2i to;
+private:
+    void* csharp_obj;
 
 protected:
     static void _bind_methods();
