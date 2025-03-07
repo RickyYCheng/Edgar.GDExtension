@@ -24,10 +24,10 @@ public static partial class GlobalHelper
 public static partial class GlobalHelper 
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
-    public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_doorhandle_from_door_array) 
+    public static void csharp_init_global(IntPtr gdprint, IntPtr get_doorhandle_from_door_array) 
     {
-        GlobalHelper.gdprint_Ptr = gdprint_Ptr;
-        GlobalHelper.get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
+        gdprint_Ptr = gdprint;
+        get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
     }
 
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
