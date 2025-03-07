@@ -5,16 +5,17 @@
 #include <godot_cpp/godot.hpp>
 
 #include "door_grid_2d.h"
+#include "manual_door_mode_grid_2d.h"
 
 using namespace godot;
 
-void initialize_types(ModuleInitializationLevel p_level)
-{
+void initialize_types(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
 	
     ClassDB::register_class<DoorGrid2D>();
+    ClassDB::register_class<ManualDoorModeGrid2D>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {
@@ -23,9 +24,7 @@ void uninitialize_types(ModuleInitializationLevel p_level) {
 	}
 }
 
-extern "C"
-{
-
+extern "C" {
 	// Initialization.
 
 	GDExtensionBool GDE_EXPORT edgar_gdextension_library_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
