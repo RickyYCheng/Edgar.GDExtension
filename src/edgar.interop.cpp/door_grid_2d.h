@@ -1,6 +1,6 @@
 //© Copyright 2014-2022, Juan Linietsky, Ariel Manzur and the Godot community (CC-BY 3.0)
-#ifndef DOORGRID2D_CLASS_H
-#define DOORGRID2D_CLASS_H
+#ifndef DOOR_GRID_2D_CLASS_H
+#define DOOR_GRID_2D_CLASS_H
 
 // We don't need windows.h in this plugin but many others do and it throws up on itself all the time
 // So best to include it and make sure CI warns us when we use something Microsoft took for their own goals....
@@ -32,4 +32,4 @@ public:
     static DoorGrid2D* cons(Vector2i from, Vector2i to);
 };
 
-#endif // DOORGRID2D_CLASS_H
+#endif // DOOR_GRID_2D_CLASS_H
