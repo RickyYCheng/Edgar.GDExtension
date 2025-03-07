@@ -13,8 +13,8 @@ void gdprint(const char *str) {
     UtilityFunctions::print(str);
 }
 
-void *get_handle_from_array(TypedArray<_CSharpRefCounted> *array_Ptr, int idx) {
-    _CSharpRefCounted *door = Object::cast_to<_CSharpRefCounted>((*array_Ptr)[idx]);
+void *get_handle_from_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
+    DoorGrid2D *door = Object::cast_to<DoorGrid2D>((*array_Ptr)[idx]);
     return door->get_csharp_obj_handle();
 }
 
