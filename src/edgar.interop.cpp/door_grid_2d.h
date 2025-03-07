@@ -9,6 +9,7 @@
 #endif
 
 #include <godot_cpp/classes/ref.hpp>
+#include "_csharp_ref_counted.h"
 
 using namespace godot;
 
@@ -16,19 +17,13 @@ extern "C" {
     void* csharp_obj_alloc_door_grid_2d(int x1, int y1, int x2, int y2);
 }
 
-class DoorGrid2D : public RefCounted {
-    GDCLASS(DoorGrid2D, RefCounted);
-
-private:
-    void* csharp_obj_handle_Ptr;
+class DoorGrid2D : public _CSharpRefCounted {
+    GDCLASS(DoorGrid2D, RefCounted); // use RefCounted
 
 protected:
     static void _bind_methods();
 
 public:
-    DoorGrid2D();
-    ~DoorGrid2D();
-
     static DoorGrid2D* cons(Vector2i from, Vector2i to);
 };
 
