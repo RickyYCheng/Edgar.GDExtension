@@ -4,9 +4,6 @@ using System;
 using System.Runtime.InteropServices;
 using Edgar.GraphBasedGenerator.Grid2D;
 
-// [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-// public delegate void PrintDelegate(string str);
-
 public static class DoorGrid2DHelper
 {
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references

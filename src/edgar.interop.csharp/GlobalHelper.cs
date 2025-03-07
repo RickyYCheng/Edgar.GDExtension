@@ -3,6 +3,9 @@ namespace Edgar.Interop.CSharp;
 using System;
 using System.Runtime.InteropServices;
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate IntPtr GetHandleFromArrayDelegate(IntPtr array_Ptr, int idx);
+
 public static class GlobalHelper 
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]

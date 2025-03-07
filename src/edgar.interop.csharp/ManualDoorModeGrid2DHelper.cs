@@ -1,6 +1,7 @@
 namespace Edgar.Interop.CSharp;
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Edgar.GraphBasedGenerator.Grid2D;
 
@@ -11,12 +12,20 @@ public static class ManualDoorModeGrid2DHelper
     // because we don't need to modify C# objects directly in C++.
     // If such a need arises, modifications can be done through C# functions.
     // The key focus is on referencing rather than direct access (address)
-    // [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_manual_door_mode_grid_2d))]
-    // public static IntPtr csharp_obj_alloc_manual_door_mode_grid_2d()
-    // {
-    //     var obj = new ManualDoorModeGrid2D([]);
-    //     var handle = GCHandle.Alloc(obj);
-    //     var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
-    //     return obj_handle_Ptr;
-    // }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_manual_door_mode_grid_2d))]
+    public static IntPtr csharp_obj_alloc_manual_door_mode_grid_2d(IntPtr array_Ptr, int size, IntPtr get_handle_from_array_Ptr)
+    {
+        var get_handle_from_array = Marshal.GetDelegateForFunctionPointer<GetHandleFromArrayDelegate>(get_handle_from_array_Ptr);
+        var doors = new List<DoorGrid2D>();
+        for (var i = 0; i < size; i++) 
+        {
+            var door = (DoorGrid2D)GCHandle.FromIntPtr(get_handle_from_array(array_Ptr, i)).Target;
+            doors.Add(door);
+        }
+
+        var obj = new ManualDoorModeGrid2D(doors);
+        var handle = GCHandle.Alloc(obj);
+        var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
+        return obj_handle_Ptr;
+    }
 }
