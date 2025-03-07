@@ -6,8 +6,8 @@
 
 using namespace godot;
 
-DoorGrid2D* DoorGrid2D::cons(Vector2i from, Vector2i to) {
-    DoorGrid2D* self = memnew(DoorGrid2D);
+DoorGrid2D *DoorGrid2D::cons(Vector2i from, Vector2i to) {
+    DoorGrid2D *self = memnew(DoorGrid2D);
     self->csharp_obj_handle = csharp_obj_alloc_door_grid_2d(from.x, from.y, to.x, to.y);
     return self;
 }

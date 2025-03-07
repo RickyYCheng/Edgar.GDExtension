@@ -18,7 +18,7 @@ class _CSharpRefCounted : public RefCounted {
     GDCLASS(_CSharpRefCounted, RefCounted);
 
 protected:
-    void* csharp_obj_handle;
+    void *csharp_obj_handle;
 
 public:
     _CSharpRefCounted() : RefCounted() {
@@ -29,8 +29,8 @@ public:
         this->csharp_obj_handle = nullptr;
     }
 
-    void* get_csharp_obj_handle() { 
-        return this->csharp_obj_handle; 
+    void *get_csharp_obj_handle() {
+        return this->csharp_obj_handle;
     }
 };
 

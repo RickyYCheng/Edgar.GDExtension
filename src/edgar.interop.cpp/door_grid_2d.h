@@ -14,7 +14,7 @@
 using namespace godot;
 
 extern "C" {
-    void* csharp_obj_alloc_door_grid_2d(int x1, int y1, int x2, int y2);
+    void *csharp_obj_alloc_door_grid_2d(int x1, int y1, int x2, int y2);
 }
 
 class DoorGrid2D : public _CSharpRefCounted {
@@ -24,7 +24,7 @@ protected:
     static void _bind_methods();
 
 public:
-    static DoorGrid2D* cons(Vector2i from, Vector2i to);
+    static DoorGrid2D *cons(Vector2i from, Vector2i to);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H
