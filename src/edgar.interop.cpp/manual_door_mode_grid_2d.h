@@ -16,7 +16,7 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_manual_door_mode_grid_2d(void *array_Ptr, int size, void *get_handle_from_array_Ptr);
+    void *csharp_obj_alloc_manual_door_mode_grid_2d(void *array_Ptr, int size);
 }
 
 class ManualDoorModeGrid2D : public _CSharpRefCounted {
