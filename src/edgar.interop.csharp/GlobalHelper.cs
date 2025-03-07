@@ -4,13 +4,25 @@ using System;
 using System.Runtime.InteropServices;
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void GDPrintDelegate(string str);
+
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate IntPtr GetHandleFromArrayDelegate(IntPtr array_Ptr, int idx);
 
-public static class GlobalHelper 
+public static partial class GlobalHelper
 {
-    public static IntPtr gdprint_Ptr;
-    public static IntPtr get_handle_from_array_Ptr;
+    public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
+    public static GetHandleFromArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetHandleFromArrayDelegate>(get_handle_from_array_Ptr);
+}
 
+public static partial class GlobalHelper 
+{
+    private static IntPtr gdprint_Ptr;
+    private static IntPtr get_handle_from_array_Ptr;
+}
+
+public static partial class GlobalHelper 
+{
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
     public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_handle_from_array_Ptr) 
     {
@@ -28,3 +40,5 @@ public static class GlobalHelper
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_gc_collect))]
     public static void csharp_gc_collect() => GC.Collect();
 }
+
+
