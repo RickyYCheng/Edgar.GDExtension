@@ -12,13 +12,13 @@ public delegate IntPtr GetDoorHandleFromDoorArrayDelegate(IntPtr array_Ptr, int 
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
-    public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array);
+    public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array_Ptr);
 }
 
 public static partial class GlobalHelper 
 {
     private static IntPtr gdprint_Ptr;
-    private static IntPtr get_doorhandle_from_door_array;
+    private static IntPtr get_doorhandle_from_door_array_Ptr;
 }
 
 public static partial class GlobalHelper 
@@ -27,7 +27,7 @@ public static partial class GlobalHelper
     public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_doorhandle_from_door_array) 
     {
         GlobalHelper.gdprint_Ptr = gdprint_Ptr;
-        GlobalHelper.get_doorhandle_from_door_array = get_doorhandle_from_door_array;
+        GlobalHelper.get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
     }
 
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
