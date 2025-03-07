@@ -13,7 +13,7 @@ void gdprint(const char *str) {
     UtilityFunctions::print(str);
 }
 
-void *get_handle_from_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
+void *get_doorhandle_from_door_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
     DoorGrid2D *door = Object::cast_to<DoorGrid2D>((*array_Ptr)[idx]);
     return door->get_csharp_obj_handle();
 }
@@ -23,7 +23,7 @@ void initialize_types(ModuleInitializationLevel p_level) {
         return;
     }
 
-    csharp_init_global(&gdprint, &get_handle_from_array);
+    csharp_init_global(&gdprint, &get_doorhandle_from_door_array);
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();
 }

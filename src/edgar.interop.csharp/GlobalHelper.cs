@@ -7,27 +7,27 @@ using System.Runtime.InteropServices;
 public delegate void GDPrintDelegate(string str);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public delegate IntPtr GetHandleFromArrayDelegate(IntPtr array_Ptr, int idx);
+public delegate IntPtr GetDoorHandleFromDoorArrayDelegate(IntPtr array_Ptr, int idx);
 
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
-    public static GetHandleFromArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetHandleFromArrayDelegate>(get_handle_from_array_Ptr);
+    public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array);
 }
 
 public static partial class GlobalHelper 
 {
     private static IntPtr gdprint_Ptr;
-    private static IntPtr get_handle_from_array_Ptr;
+    private static IntPtr get_doorhandle_from_door_array;
 }
 
 public static partial class GlobalHelper 
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
-    public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_handle_from_array_Ptr) 
+    public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_doorhandle_from_door_array) 
     {
         GlobalHelper.gdprint_Ptr = gdprint_Ptr;
-        GlobalHelper.get_handle_from_array_Ptr = get_handle_from_array_Ptr;
+        GlobalHelper.get_doorhandle_from_door_array = get_doorhandle_from_door_array;
     }
 
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
