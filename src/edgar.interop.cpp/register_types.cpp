@@ -9,7 +9,7 @@
 
 using namespace godot;
 
-static void *get_handle_from_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
+void *get_handle_from_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
     DoorGrid2D *door = Object::cast_to<DoorGrid2D>((*array_Ptr)[idx]);
     return door->get_csharp_obj_handle();
 }
