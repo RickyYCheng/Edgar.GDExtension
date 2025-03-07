@@ -8,10 +8,13 @@ public delegate IntPtr GetHandleFromArrayDelegate(IntPtr array_Ptr, int idx);
 
 public static class GlobalHelper 
 {
+    public static IntPtr gdprint_Ptr;
     public static IntPtr get_handle_from_array_Ptr;
+
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
-    public static void csharp_init_global(IntPtr get_handle_from_array_Ptr) 
+    public static void csharp_init_global(IntPtr gdprint_Ptr, IntPtr get_handle_from_array_Ptr) 
     {
+        GlobalHelper.gdprint_Ptr = gdprint_Ptr;
         GlobalHelper.get_handle_from_array_Ptr = get_handle_from_array_Ptr;
     }
 
@@ -21,6 +24,7 @@ public static class GlobalHelper
         var handle = GCHandle.FromIntPtr(obj_handle_Ptr);
         handle.Free();
     }
+    
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_gc_collect))]
     public static void csharp_gc_collect() => GC.Collect();
 }
