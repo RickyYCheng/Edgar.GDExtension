@@ -22,6 +22,6 @@ DoorGrid2D* DoorGrid2D::cons(Vector2i from, Vector2i to) {
 }
 
 void DoorGrid2D::_bind_methods() {
-    // p_name must same to func name
+    // p_name must be same to the func name
     ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "from", "to"), &DoorGrid2D::cons);
 }
