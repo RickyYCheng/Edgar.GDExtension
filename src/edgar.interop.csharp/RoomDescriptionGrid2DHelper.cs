@@ -7,8 +7,6 @@ using Edgar.GraphBasedGenerator.Grid2D;
 
 public static unsafe class RoomDescriptionGrid2DHelper
 {
-    public static readonly Dictionary<RoomDescriptionGrid2D, IntPtr> Mapping = [];
-
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
     // because we don't need to modify C# objects directly in C++.
@@ -28,14 +26,6 @@ public static unsafe class RoomDescriptionGrid2DHelper
         var handle = GCHandle.Alloc(obj);
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         
-        Mapping[obj] = obj_handle_Ptr;
-        
         return obj_handle_Ptr;
-    }
-    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free_room_description_grid_2d))]
-    public static void csharp_obj_free_room_description_grid_2d(IntPtr handle)
-    {
-        var room_description = (RoomDescriptionGrid2D)GCHandle.FromIntPtr(handle).Target;
-        Mapping.Remove(room_description);
     }
 }

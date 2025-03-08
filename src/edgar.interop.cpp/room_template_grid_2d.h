@@ -26,7 +26,6 @@ extern "C" {
         void *transformations,
         int transformations_size
     );
-    void csharp_obj_free_room_template_grid_2d(void *handle);
 }
 
 class RoomTemplateGrid2D : public RefCounted {
@@ -53,7 +52,6 @@ public:
     }
     ~RoomTemplateGrid2D() {
         if (this->csharp_obj_handle == nullptr) return;
-        csharp_obj_free_room_template_grid_2d(this->csharp_obj_handle);
         csharp_obj_free(this->csharp_obj_handle);
         this->csharp_obj_handle = nullptr;
     }
