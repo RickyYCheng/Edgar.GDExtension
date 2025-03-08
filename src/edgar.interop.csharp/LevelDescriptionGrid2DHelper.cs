@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
 
@@ -22,4 +23,18 @@ public static unsafe class LevelDescriptionGrid2DHelper
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2dd_add_room))]
+    public static void csharp_level_description_grid_2dd_add_room(IntPtr level_description_Ptr, IntPtr room_name_buffer, int room_name_size, IntPtr room_description_Ptr)
+    {
+        var level_description = (LevelDescriptionGrid2D<string>)GCHandle.FromIntPtr(level_description_Ptr).Target;
+        var room_name_builder = new StringBuilder(room_name_size);
+        for (var i = 0; i < room_name_size; i++)
+        {
+            room_name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(room_name_buffer, i));
+        }
+        var room_name = room_name_builder.ToString();
+        var room_description = (RoomDescriptionGrid2D)GCHandle.FromIntPtr(room_description_Ptr).Target;
+        level_description.AddRoom(room_name, room_description);
+    }
+
 }

@@ -11,11 +11,13 @@
 #include <godot_cpp/classes/ref.hpp>
 
 #include "_csharp_global_helper.h"
+#include "room_description_grid_2d.h"
 
 using namespace godot;
 
 extern "C" {
     void *csharp_obj_alloc_level_description_grid_2d();
+    void csharp_level_description_grid_2dd_add_room(void *level_description_Ptr, void *room_name_buffer, int room_name_size, void *room_description_Ptr);
 }
 
 class LevelDescriptionGrid2D : public RefCounted {
@@ -27,7 +29,7 @@ protected:
 
 public:
     LevelDescriptionGrid2D() : RefCounted() {
-        this->csharp_obj_handle = nullptr;
+        this->csharp_obj_handle = csharp_obj_alloc_level_description_grid_2d();
     }
 
     ~LevelDescriptionGrid2D() {
@@ -39,6 +41,8 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
+
+    void add_room(String room, RoomDescriptionGrid2D *room_description);
 
     static LevelDescriptionGrid2D *cons();
 };
