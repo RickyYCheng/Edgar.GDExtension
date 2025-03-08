@@ -20,4 +20,10 @@ public static class GraphBasedGeneratorGrid2DHelper
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_graph_based_generator_grid_2d_generate_layout))]
+    public static void csharp_graph_based_generator_grid_2d_generate_layout(IntPtr generator_handle)
+    {
+        var generator = (GraphBasedGeneratorGrid2D<string>)GCHandle.FromIntPtr(generator_handle).Target;
+        var layout = generator.GenerateLayout();
+    }
 }

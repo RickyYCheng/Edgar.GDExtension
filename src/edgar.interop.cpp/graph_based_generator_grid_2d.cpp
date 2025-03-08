@@ -12,7 +12,12 @@ GraphBasedGeneratorGrid2D *GraphBasedGeneratorGrid2D::cons(LevelDescriptionGrid2
     return self;
 }
 
+void GraphBasedGeneratorGrid2D::generate_layout() {
+    csharp_graph_based_generator_grid_2d_generate_layout(this->csharp_obj_handle);
+}
+
 void GraphBasedGeneratorGrid2D::_bind_methods() {
     // p_name must be same to the func name
     ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "level_description"), &GraphBasedGeneratorGrid2D::cons);
+    ClassDB::bind_method(D_METHOD("generate_layout"), &GraphBasedGeneratorGrid2D::generate_layout);
 }
