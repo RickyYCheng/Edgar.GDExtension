@@ -9,6 +9,7 @@
 #include "room_template_grid_2d.h"
 #include "room_description_grid_2d.h"
 #include "level_description_grid_2d.h"
+#include "graph_based_generator_grid_2d.h"
 
 using namespace godot;
 
@@ -58,6 +59,7 @@ void initialize_types(ModuleInitializationLevel p_level) {
     ClassDB::register_class<RoomTemplateGrid2D>();
     ClassDB::register_class<RoomDescriptionGrid2D>();
     ClassDB::register_class<LevelDescriptionGrid2D>();
+    ClassDB::register_class<GraphBasedGeneratorGrid2D>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {

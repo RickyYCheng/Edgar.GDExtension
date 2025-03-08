@@ -19,3 +19,6 @@ func _ready() -> void:
 	level_description.add_room("room 1", room_description)
 	level_description.add_room("room 2", room_description)
 	level_description.add_connection("room 1", "room 2")
+	
+	var generator = GraphBasedGeneratorGrid2D.cons(level_description)
+	
