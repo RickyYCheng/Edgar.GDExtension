@@ -18,10 +18,9 @@ public static unsafe class RoomDescriptionGrid2DHelper
     public static IntPtr csharp_obj_alloc_room_description_grid_2d(bool is_corridor, IntPtr array_Ptr, int size)
     {
         var room_templates = new List<RoomTemplateGrid2D>(size);
-        var template_getter = GlobalHelper.GetRoomTemplateHandleFromRoomTemplateArray;
         for (var i = 0; i < size; i++)
         {
-            var room_template = (RoomTemplateGrid2D)GCHandle.FromIntPtr(template_getter(array_Ptr, i)).Target;
+            var room_template = (RoomTemplateGrid2D)GCHandle.FromIntPtr(GlobalHelper.GetRoomTemplateHandleFromRoomTemplateArray(array_Ptr, i)).Target;
             room_templates.Add(room_template);
         }
 

@@ -26,19 +26,17 @@ public static unsafe class RoomTemplateGrid2DHelper
     )
     {
         var name_builder = new StringBuilder(name_buffer_size);
-        var char_getter = GlobalHelper.GetByteFromPackedByteArray;
         for (var i = 0; i < name_buffer_size; i++)
         {
-            name_builder.Append((char)char_getter(name_buffer, i));
+            name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(name_buffer, i));
         }
         var name = name_builder.ToString();
 
         var outline = new List<Vector2Int>(outline_size);
-        var vec_getter = GlobalHelper.GetVector2FromPackedVector2Array;
         for (var i = outline_size - 1; i >= 0; i--)
         {
             float x = 0, y = 0;
-            vec_getter(outline_Ptr, i, &x, &y);
+            GlobalHelper.GetVector2FromPackedVector2Array(outline_Ptr, i, &x, &y);
             var pt = new Vector2Int((int)x, (int)y);
             outline.Add(pt);
         }

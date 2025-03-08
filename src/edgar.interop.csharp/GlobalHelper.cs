@@ -13,7 +13,7 @@ public delegate IntPtr GetDoorHandleFromDoorArrayDelegate(IntPtr array_Ptr, int 
 public delegate byte GetByteFromPackedByteArrayDelegate(IntPtr array_Ptr, int idx);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate void GetVector2FromPackedVector2ArrayDelegate(IntPtr array_Ptr, int idx, float *_out_x, float *_out_y);
+public unsafe delegate void GetVector2FromPackedVector2ArrayDelegate(IntPtr array_Ptr, int idx, float* _out_x, float* _out_y);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public unsafe delegate int GetInt32FromPackedInt32ArrayDelegate(IntPtr array_Ptr, int idx);
@@ -23,44 +23,38 @@ public delegate IntPtr GetRoomTemplateHandleFromRoomTemplateArrayDelegate(IntPtr
 
 public static partial class GlobalHelper
 {
-    public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
-    public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array_Ptr);
-    public static GetByteFromPackedByteArrayDelegate GetByteFromPackedByteArray => Marshal.GetDelegateForFunctionPointer<GetByteFromPackedByteArrayDelegate>(get_byte_from_packed_byte_array_Ptr);
-    public static GetVector2FromPackedVector2ArrayDelegate GetVector2FromPackedVector2Array => Marshal.GetDelegateForFunctionPointer<GetVector2FromPackedVector2ArrayDelegate>(get_vector2_from_packed_vector2_array_Ptr);
-    public static GetInt32FromPackedInt32ArrayDelegate GetInt32FromPackedInt32Array => Marshal.GetDelegateForFunctionPointer<GetInt32FromPackedInt32ArrayDelegate>(get_int32_from_packed_int32_array_Ptr);
-    public static GetRoomTemplateHandleFromRoomTemplateArrayDelegate GetRoomTemplateHandleFromRoomTemplateArray => Marshal.GetDelegateForFunctionPointer<GetRoomTemplateHandleFromRoomTemplateArrayDelegate>(get_room_template_handle_from_room_template_array_Ptr);
+    public static GDPrintDelegate GDPrint { get; private set; }
+    public static GetDoorHandleFromDoorArrayDelegate GetDoorHandleFromDoorArray { get; private set; }
+    public static GetByteFromPackedByteArrayDelegate GetByteFromPackedByteArray { get; private set; }
+    public static GetVector2FromPackedVector2ArrayDelegate GetVector2FromPackedVector2Array { get; private set; }
+    public static GetInt32FromPackedInt32ArrayDelegate GetInt32FromPackedInt32Array { get; private set; }
+    public static GetRoomTemplateHandleFromRoomTemplateArrayDelegate GetRoomTemplateHandleFromRoomTemplateArray { get; private set; }
 }
 
-public static partial class GlobalHelper 
-{
-    private static IntPtr gdprint_Ptr;
-    private static IntPtr get_doorhandle_from_door_array_Ptr;
-    private static IntPtr get_byte_from_packed_byte_array_Ptr;
-    private static IntPtr get_vector2_from_packed_vector2_array_Ptr;
-    private static IntPtr get_int32_from_packed_int32_array_Ptr;
-    private static IntPtr get_room_template_handle_from_room_template_array_Ptr;
-}
-
-public static partial class GlobalHelper 
+public static partial class GlobalHelper
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
     public static void csharp_init_global(
-        IntPtr gdprint, 
+        IntPtr gdprint,
         IntPtr get_doorhandle_from_door_array,
         IntPtr get_byte_from_packed_byte_array,
         IntPtr get_vector2_from_packed_vector2_array,
         IntPtr get_int32_from_packed_int32_array,
         IntPtr get_room_template_handle_from_room_template_array
-    ) 
+    )
     {
-        gdprint_Ptr = gdprint;
-        get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
-        get_byte_from_packed_byte_array_Ptr = get_byte_from_packed_byte_array;
-        get_vector2_from_packed_vector2_array_Ptr = get_vector2_from_packed_vector2_array;
-        get_int32_from_packed_int32_array_Ptr = get_int32_from_packed_int32_array;
-        get_room_template_handle_from_room_template_array_Ptr = get_room_template_handle_from_room_template_array;
+        // 一次性转换并缓存委托
+        GDPrint = Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint);
+        GetDoorHandleFromDoorArray = Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array);
+        GetByteFromPackedByteArray = Marshal.GetDelegateForFunctionPointer<GetByteFromPackedByteArrayDelegate>(get_byte_from_packed_byte_array);
+        GetVector2FromPackedVector2Array = Marshal.GetDelegateForFunctionPointer<GetVector2FromPackedVector2ArrayDelegate>(get_vector2_from_packed_vector2_array);
+        GetInt32FromPackedInt32Array = Marshal.GetDelegateForFunctionPointer<GetInt32FromPackedInt32ArrayDelegate>(get_int32_from_packed_int32_array);
+        GetRoomTemplateHandleFromRoomTemplateArray = Marshal.GetDelegateForFunctionPointer<GetRoomTemplateHandleFromRoomTemplateArrayDelegate>(get_room_template_handle_from_room_template_array);
     }
+}
 
+public static partial class GlobalHelper 
+{
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
     public static void csharp_obj_free(IntPtr obj_handle_Ptr)
     {
@@ -71,5 +65,3 @@ public static partial class GlobalHelper
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_gc_collect))]
     public static void csharp_gc_collect() => GC.Collect();
 }
-
-

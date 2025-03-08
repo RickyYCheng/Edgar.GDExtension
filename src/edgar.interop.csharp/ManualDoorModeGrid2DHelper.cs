@@ -18,7 +18,7 @@ public static class ManualDoorModeGrid2DHelper
         var doors = new List<DoorGrid2D>();
         for (var i = 0; i < size; i++) 
         {
-            var door = (DoorGrid2D)GCHandle.FromIntPtr(GlobalHelper.GetHandleFromArray(array_Ptr, i)).Target;
+            var door = (DoorGrid2D)GCHandle.FromIntPtr(GlobalHelper.GetDoorHandleFromDoorArray(array_Ptr, i)).Target;
             doors.Add(door);
         }
 
