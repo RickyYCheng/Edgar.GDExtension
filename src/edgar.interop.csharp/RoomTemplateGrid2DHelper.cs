@@ -19,7 +19,8 @@ public static unsafe class RoomTemplateGrid2DHelper
         IntPtr name_buffer, 
         int name_buffer_size,
         IntPtr outline_Ptr,
-        int outline_size
+        int outline_size,
+        IntPtr doors_handle
     )
     {
         var gdprint = GlobalHelper.GDPrint;
@@ -42,8 +43,9 @@ public static unsafe class RoomTemplateGrid2DHelper
             outline.Add(pt);
         }
 
-        var obj = new object();
-        // var obj = new RoomTemplateGrid2D();
+        var doors = (ManualDoorModeGrid2D)GCHandle.FromIntPtr(doors_handle).Target;
+
+        var obj = new RoomTemplateGrid2D(new(outline), doors, name);
         var handle = GCHandle.Alloc(obj);
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;

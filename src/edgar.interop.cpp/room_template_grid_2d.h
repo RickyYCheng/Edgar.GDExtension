@@ -21,7 +21,8 @@ extern "C" {
         void *name_buffer, 
         int name_buffer_size,
         void *outline,
-        int outline_size
+        int outline_size,
+        void *doors_handle
     );
 }
 
