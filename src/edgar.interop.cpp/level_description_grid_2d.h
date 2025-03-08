@@ -17,8 +17,8 @@ using namespace godot;
 
 extern "C" {
     void *csharp_obj_alloc_level_description_grid_2d();
-    void csharp_level_description_grid_2dd_add_room(void *level_description_Ptr, void *room_name_buffer, int room_name_size, void *room_description_Ptr);
-    void csharp_level_description_grid_2dd_add_connection(void *level_description_Ptr, void *room_1_buffer, int room_1_size, void *room_2_buffer, int room_2_size);
+    void csharp_level_description_grid_2d_add_room(void *level_description_Ptr, void *room_name_buffer, int room_name_size, void *room_description_Ptr);
+    void csharp_level_description_grid_2d_add_connection(void *level_description_Ptr, void *room_1_buffer, int room_1_size, void *room_2_buffer, int room_2_size);
 }
 
 class LevelDescriptionGrid2D : public RefCounted {

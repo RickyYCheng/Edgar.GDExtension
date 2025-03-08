@@ -23,8 +23,8 @@ public static unsafe class LevelDescriptionGrid2DHelper
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;
     }
-    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2dd_add_room))]
-    public static void csharp_level_description_grid_2dd_add_room(IntPtr level_description_Ptr, IntPtr room_name_buffer, int room_name_size, IntPtr room_description_Ptr)
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2d_add_room))]
+    public static void csharp_level_description_grid_2d_add_room(IntPtr level_description_Ptr, IntPtr room_name_buffer, int room_name_size, IntPtr room_description_Ptr)
     {
         var level_description = (LevelDescriptionGrid2D<string>)GCHandle.FromIntPtr(level_description_Ptr).Target;
         var room_name_builder = new StringBuilder(room_name_size);
@@ -36,8 +36,8 @@ public static unsafe class LevelDescriptionGrid2DHelper
         var room_description = (RoomDescriptionGrid2D)GCHandle.FromIntPtr(room_description_Ptr).Target;
         level_description.AddRoom(room_name, room_description);
     }
-    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2dd_add_connection))]
-    public static void csharp_level_description_grid_2dd_add_connection(IntPtr level_description_Ptr, IntPtr room1_buffer, int room1_size, IntPtr room2_buffer, int room2_size)
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2d_add_connection))]
+    public static void csharp_level_description_grid_2d_add_connection(IntPtr level_description_Ptr, IntPtr room1_buffer, int room1_size, IntPtr room2_buffer, int room2_size)
     {
         var level_description = (LevelDescriptionGrid2D<string>)GCHandle.FromIntPtr(level_description_Ptr).Target;
         var room_name_builder = new StringBuilder(Math.Max(room1_size, room2_size));
