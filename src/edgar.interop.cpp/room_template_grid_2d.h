@@ -19,7 +19,9 @@ using namespace godot;
 extern "C" {
     void *csharp_obj_alloc_room_template_grid_2d(
         void *name_buffer, 
-        int name_buffer_size
+        int name_buffer_size,
+        void *outline,
+        int outline_size
     );
 }
 

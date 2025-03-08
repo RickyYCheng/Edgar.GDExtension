@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<PublishAot>true</PublishAot>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	
 	<Target Name="CopyNativeFilesPublish" AfterTargets="Publish">

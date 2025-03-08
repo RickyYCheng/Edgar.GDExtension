@@ -12,11 +12,15 @@ public delegate IntPtr GetDoorHandleFromDoorArrayDelegate(IntPtr array_Ptr, int 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate byte GetByteFromPackedByteArrayDelegate(IntPtr array_Ptr, int idx);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate void GetVector2FromPackedVector2ArrayDelegate(IntPtr array_Ptr, int idx, float *_out_x, float *_out_y);
+
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
     public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array_Ptr);
     public static GetByteFromPackedByteArrayDelegate GetByteFromPackedByteArray => Marshal.GetDelegateForFunctionPointer<GetByteFromPackedByteArrayDelegate>(get_byte_from_packed_byte_array_Ptr);
+    public static GetVector2FromPackedVector2ArrayDelegate GetVector2FromPackedVector2Array => Marshal.GetDelegateForFunctionPointer<GetVector2FromPackedVector2ArrayDelegate>(get_vector2_from_packed_vector2_array_Ptr);
 }
 
 public static partial class GlobalHelper 
@@ -24,6 +28,7 @@ public static partial class GlobalHelper
     private static IntPtr gdprint_Ptr;
     private static IntPtr get_doorhandle_from_door_array_Ptr;
     private static IntPtr get_byte_from_packed_byte_array_Ptr;
+    private static IntPtr get_vector2_from_packed_vector2_array_Ptr;
 }
 
 public static partial class GlobalHelper 
@@ -32,11 +37,14 @@ public static partial class GlobalHelper
     public static void csharp_init_global(
         IntPtr gdprint, 
         IntPtr get_doorhandle_from_door_array,
-        IntPtr get_byte_from_packed_byte_array) 
+        IntPtr get_byte_from_packed_byte_array,
+        IntPtr get_vector2_from_packed_vector2_array
+    ) 
     {
         gdprint_Ptr = gdprint;
         get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
         get_byte_from_packed_byte_array_Ptr = get_byte_from_packed_byte_array;
+        get_vector2_from_packed_vector2_array_Ptr = get_vector2_from_packed_vector2_array;
     }
 
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
