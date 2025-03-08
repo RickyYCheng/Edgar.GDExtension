@@ -2,7 +2,10 @@
 #define CSHARP_GLOBAL_HELPER_H
 
 extern "C" {
-    void csharp_init_global(void *gdprint, void *get_handle_from_array);
+    void csharp_init_global(
+        void *gdprint, 
+        void *get_doorhandle_from_door_array
+    );
     
     void csharp_obj_free(void *csharp_obj_handle_Ptr);
     void csharp_gc_collect();
