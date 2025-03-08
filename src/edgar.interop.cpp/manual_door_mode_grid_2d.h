@@ -31,6 +31,7 @@ public:
         this->csharp_obj_handle = nullptr;
     }
     ~ManualDoorModeGrid2D() {
+        if (this->csharp_obj_handle == nullptr) return;
         csharp_obj_free(this->csharp_obj_handle);
         this->csharp_obj_handle = nullptr;
     }

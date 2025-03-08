@@ -14,4 +14,4 @@ func _ready() -> void:
 		#[RoomTemplateGrid2D.IDENTITY]
 	#)
 	#var room_description := RoomDescriptionGrid2D.cons(false, [room_template])
-	LevelDescriptionGrid2D.cons()
+	DoorGrid2D.new()
