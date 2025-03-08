@@ -29,6 +29,10 @@ void get_vector2_from_packed_vector2_array(PackedVector2Array *array_Ptr, int id
     *_out_y = v.y;
 }
 
+int get_int32_from_packed_int32_array(PackedInt32Array *array_Ptr, int idx) {
+    return (*array_Ptr)[idx];
+}
+
 void initialize_types(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
@@ -38,7 +42,8 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &gdprint, 
         &get_doorhandle_from_door_array,
         &get_byte_from_packed_byte_array,
-        &get_vector2_from_packed_vector2_array
+        &get_vector2_from_packed_vector2_array,
+        &get_int32_from_packed_int32_array
     );
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();

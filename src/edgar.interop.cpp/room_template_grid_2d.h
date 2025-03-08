@@ -22,7 +22,9 @@ extern "C" {
         int name_buffer_size,
         void *outline,
         int outline_size,
-        void *doors_handle
+        void *doors_handle,
+        void *transformations,
+        int transformations_size
     );
 }
 
