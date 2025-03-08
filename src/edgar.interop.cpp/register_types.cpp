@@ -34,6 +34,11 @@ int get_int32_from_packed_int32_array(PackedInt32Array *array_Ptr, int idx) {
     return (*array_Ptr)[idx];
 }
 
+void *get_room_template_handle_from_room_template_array(TypedArray<RoomTemplateGrid2D> *array_Ptr, int idx) {
+    RoomTemplateGrid2D *room_template = Object::cast_to<RoomTemplateGrid2D>((*array_Ptr)[idx]);
+    return room_template->get_csharp_obj_handle();
+}
+
 void initialize_types(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
@@ -44,7 +49,8 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &get_doorhandle_from_door_array,
         &get_byte_from_packed_byte_array,
         &get_vector2_from_packed_vector2_array,
-        &get_int32_from_packed_int32_array
+        &get_int32_from_packed_int32_array,
+        &get_room_template_handle_from_room_template_array
     );
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();

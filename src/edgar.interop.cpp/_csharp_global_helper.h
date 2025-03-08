@@ -7,7 +7,8 @@ extern "C" {
         void *get_doorhandle_from_door_array,
         void *get_byte_from_packed_byte_array,
         void *get_vector2_from_packed_vector2_array,
-        void *get_int32_from_packed_int32_array
+        void *get_int32_from_packed_int32_array,
+        void *get_room_template_handle_from_room_template_array
     );
     
     void csharp_obj_free(void *csharp_obj_handle_Ptr);
