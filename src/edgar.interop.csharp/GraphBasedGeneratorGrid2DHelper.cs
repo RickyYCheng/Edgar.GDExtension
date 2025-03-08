@@ -28,12 +28,9 @@ public static unsafe class GraphBasedGeneratorGrid2DHelper
         var layout = generator.GenerateLayout();
         foreach (var room in layout.Rooms)
         {
-            fixed(char *room_ptr = room.Room) 
+            fixed (char* room_ptr = room.Room, room_template = room.RoomTemplate.Name)
             {
-                fixed (char *room_template = room.RoomTemplate.Name)
-                {
-                    GlobalHelper.AddLayoutRoom(rooms_Ptr, room_ptr, room.IsCorridor, room.Position.X, room.Position.Y, (int)room.Transformation, room_template);
-                }
+                GlobalHelper.AddLayoutRoom(rooms_Ptr, room_ptr, room.IsCorridor, room.Position.X, room.Position.Y, (int)room.Transformation, room_template);
             }
         }
     }
