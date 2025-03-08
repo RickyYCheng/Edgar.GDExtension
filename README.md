@@ -38,6 +38,6 @@ func _ready() -> void:
 	print(generator.generate_layout())
 ```
 > output:
-> ```text
-> { "rooms": [{ "room": "room 1", "is_corridor": false, "position": (0, 0), "transformation": 0, "room_template": "template" }, { "room": "room 2",  "is_corridor": false, "position": (-1, 0), "transformation": 0, "room_template": "template" }] }
-> ```
+```text
+{ "rooms": [{ "room": "room 1", "is_corridor": false, "position": (0, 0), "transformation": 0, "room_template": "template" }, { "room": "room 2",  "is_corridor": false, "position": (-1, 0), "transformation": 0, "room_template": "template" }] }
+```
