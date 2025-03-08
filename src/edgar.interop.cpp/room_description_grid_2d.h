@@ -17,7 +17,7 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_room_description_grid_2d(bool is_corridor);
+    void *csharp_obj_alloc_room_description_grid_2d(bool is_corridor, void *array_Ptr, int size);
 }
 
 class RoomDescriptionGrid2D : public RefCounted {
