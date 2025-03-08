@@ -17,7 +17,7 @@ using namespace godot;
 
 extern "C" {
     void *csharp_obj_alloc_graph_based_generator_grid_2d(void *level_description_handle);
-    void csharp_graph_based_generator_grid_2d_generate_layout(void *generator_handle);
+    void csharp_graph_based_generator_grid_2d_generate_layout(void *generator_handle, void *rooms_array);
 }
 
 class GraphBasedGeneratorGrid2D : public RefCounted {
@@ -41,7 +41,7 @@ public:
         return this->csharp_obj_handle;
     }
 
-    void generate_layout();
+    Dictionary generate_layout();
 
     static GraphBasedGeneratorGrid2D *cons(LevelDescriptionGrid2D *level_description);
 };

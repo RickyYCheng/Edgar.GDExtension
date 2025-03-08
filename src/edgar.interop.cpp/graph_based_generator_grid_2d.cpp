@@ -12,8 +12,12 @@ GraphBasedGeneratorGrid2D *GraphBasedGeneratorGrid2D::cons(LevelDescriptionGrid2
     return self;
 }
 
-void GraphBasedGeneratorGrid2D::generate_layout() {
-    csharp_graph_based_generator_grid_2d_generate_layout(this->csharp_obj_handle);
+Dictionary GraphBasedGeneratorGrid2D::generate_layout() {
+    Dictionary dict;
+    TypedArray<Dictionary> rooms;
+    csharp_graph_based_generator_grid_2d_generate_layout(this->csharp_obj_handle, &rooms);
+    dict["rooms"] = rooms;
+    return dict;
 }
 
 void GraphBasedGeneratorGrid2D::_bind_methods() {

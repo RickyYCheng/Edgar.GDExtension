@@ -21,6 +21,9 @@ public unsafe delegate int GetInt32FromPackedInt32ArrayDelegate(IntPtr array_Ptr
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate IntPtr GetRoomTemplateHandleFromRoomTemplateArrayDelegate(IntPtr array_Ptr, int idx);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public unsafe delegate IntPtr AddLayoutRoomDelegate(IntPtr rooms_Ptr, char *room, bool is_corridor);
+
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint { get; private set; }
@@ -29,6 +32,7 @@ public static partial class GlobalHelper
     public static GetVector2FromPackedVector2ArrayDelegate GetVector2FromPackedVector2Array { get; private set; }
     public static GetInt32FromPackedInt32ArrayDelegate GetInt32FromPackedInt32Array { get; private set; }
     public static GetRoomTemplateHandleFromRoomTemplateArrayDelegate GetRoomTemplateHandleFromRoomTemplateArray { get; private set; }
+    public static AddLayoutRoomDelegate AddLayoutRoom { get; private set; }
 }
 
 public static partial class GlobalHelper
@@ -40,16 +44,17 @@ public static partial class GlobalHelper
         IntPtr get_byte_from_packed_byte_array,
         IntPtr get_vector2_from_packed_vector2_array,
         IntPtr get_int32_from_packed_int32_array,
-        IntPtr get_room_template_handle_from_room_template_array
+        IntPtr get_room_template_handle_from_room_template_array,
+        IntPtr add_layout_room
     )
     {
-        // 一次性转换并缓存委托
         GDPrint = Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint);
         GetDoorHandleFromDoorArray = Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array);
         GetByteFromPackedByteArray = Marshal.GetDelegateForFunctionPointer<GetByteFromPackedByteArrayDelegate>(get_byte_from_packed_byte_array);
         GetVector2FromPackedVector2Array = Marshal.GetDelegateForFunctionPointer<GetVector2FromPackedVector2ArrayDelegate>(get_vector2_from_packed_vector2_array);
         GetInt32FromPackedInt32Array = Marshal.GetDelegateForFunctionPointer<GetInt32FromPackedInt32ArrayDelegate>(get_int32_from_packed_int32_array);
         GetRoomTemplateHandleFromRoomTemplateArray = Marshal.GetDelegateForFunctionPointer<GetRoomTemplateHandleFromRoomTemplateArrayDelegate>(get_room_template_handle_from_room_template_array);
+        AddLayoutRoom = Marshal.GetDelegateForFunctionPointer<AddLayoutRoomDelegate>(add_layout_room);
     }
 }
 

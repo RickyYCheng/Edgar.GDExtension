@@ -41,6 +41,13 @@ void *get_room_template_handle_from_room_template_array(TypedArray<RoomTemplateG
     return room_template->get_csharp_obj_handle();
 }
 
+void add_layout_room(TypedArray<Dictionary> *rooms, const char16_t *room, bool is_corridor) {
+    Dictionary dict;
+    dict["room"] = String(room);
+    dict["is_corridor"] = is_corridor;
+    rooms->push_back(dict);
+}
+
 void initialize_types(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
@@ -52,7 +59,8 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &get_byte_from_packed_byte_array,
         &get_vector2_from_packed_vector2_array,
         &get_int32_from_packed_int32_array,
-        &get_room_template_handle_from_room_template_array
+        &get_room_template_handle_from_room_template_array,
+        &add_layout_room
     );
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();

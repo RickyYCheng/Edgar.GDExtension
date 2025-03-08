@@ -4,7 +4,8 @@ using System;
 using System.Runtime.InteropServices;
 using Edgar.GraphBasedGenerator.Grid2D;
 
-public static class GraphBasedGeneratorGrid2DHelper
+
+public static unsafe class GraphBasedGeneratorGrid2DHelper
 {
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
@@ -21,9 +22,16 @@ public static class GraphBasedGeneratorGrid2DHelper
         return obj_handle_Ptr;
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_graph_based_generator_grid_2d_generate_layout))]
-    public static void csharp_graph_based_generator_grid_2d_generate_layout(IntPtr generator_handle)
+    public static void csharp_graph_based_generator_grid_2d_generate_layout(IntPtr generator_handle, IntPtr rooms_Ptr)
     {
         var generator = (GraphBasedGeneratorGrid2D<string>)GCHandle.FromIntPtr(generator_handle).Target;
         var layout = generator.GenerateLayout();
+        foreach (var room in layout.Rooms)
+        {
+            fixed(char *room_ptr = room.Room) 
+            {
+                GlobalHelper.AddLayoutRoom(rooms_Ptr, room_ptr, room.IsCorridor);
+            }
+        }
     }
 }
