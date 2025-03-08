@@ -4,7 +4,6 @@ using System;
 using System.Runtime.InteropServices;
 using Edgar.GraphBasedGenerator.Grid2D;
 
-
 public static unsafe class GraphBasedGeneratorGrid2DHelper
 {
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
