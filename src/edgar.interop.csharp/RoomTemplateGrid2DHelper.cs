@@ -60,4 +60,10 @@ public static unsafe class RoomTemplateGrid2DHelper
 
         return obj_handle_Ptr;
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free_room_template_grid_2d))]
+    public static void csharp_obj_free_room_template_grid_2d(IntPtr handle)
+    {
+        var room_template = (RoomTemplateGrid2D)GCHandle.FromIntPtr(handle).Target;
+        Mapping.Remove(room_template);
+    }
 }

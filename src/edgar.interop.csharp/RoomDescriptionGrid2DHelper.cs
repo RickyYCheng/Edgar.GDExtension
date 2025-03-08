@@ -32,4 +32,10 @@ public static unsafe class RoomDescriptionGrid2DHelper
         
         return obj_handle_Ptr;
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free_room_description_grid_2d))]
+    public static void csharp_obj_free_room_description_grid_2d(IntPtr handle)
+    {
+        var room_description = (RoomDescriptionGrid2D)GCHandle.FromIntPtr(handle).Target;
+        Mapping.Remove(room_description);
+    }
 }
