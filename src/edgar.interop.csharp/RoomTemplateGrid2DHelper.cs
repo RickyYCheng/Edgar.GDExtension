@@ -34,7 +34,7 @@ public static unsafe class RoomTemplateGrid2DHelper
 
         var outline = new List<Vector2Int>(outline_size);
         var vec_getter = GlobalHelper.GetVector2FromPackedVector2Array;
-        for (var i = 0; i < outline_size; i++)
+        for (var i = outline_size; i >= 0; i--)
         {
             float x = 0, y = 0;
             vec_getter(outline_Ptr, i, &x, &y);
