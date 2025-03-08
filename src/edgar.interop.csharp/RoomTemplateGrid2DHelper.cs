@@ -25,8 +25,6 @@ public static unsafe class RoomTemplateGrid2DHelper
         int transformations_size
     )
     {
-        var gdprint = GlobalHelper.GDPrint;
-
         var name_builder = new StringBuilder(name_buffer_size);
         var char_getter = GlobalHelper.GetByteFromPackedByteArray;
         for (var i = 0; i < name_buffer_size; i++)
