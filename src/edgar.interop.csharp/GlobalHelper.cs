@@ -22,7 +22,7 @@ public unsafe delegate int GetInt32FromPackedInt32ArrayDelegate(IntPtr array_Ptr
 public delegate IntPtr GetRoomTemplateHandleFromRoomTemplateArrayDelegate(IntPtr array_Ptr, int idx);
 
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-public unsafe delegate IntPtr AddLayoutRoomDelegate(IntPtr rooms_Ptr, char *room, bool is_corridor);
+public unsafe delegate IntPtr AddLayoutRoomDelegate(IntPtr rooms_Ptr, char *room, bool is_corridor, int posx, int posy);
 
 public static partial class GlobalHelper
 {
