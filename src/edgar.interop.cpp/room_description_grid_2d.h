@@ -12,6 +12,7 @@
 #include <godot_cpp/variant/packed_vector2_array.hpp>
 
 #include "_csharp_global_helper.h"
+#include "room_template_grid_2d.h"
 
 using namespace godot;
 
@@ -38,7 +39,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static RoomDescriptionGrid2D *cons(bool is_corridor);
+    static RoomDescriptionGrid2D *cons(bool is_corridor, TypedArray<RoomTemplateGrid2D> room_templates);
 };
 
 #endif // ROOM_DESCRIPTION_GRID_2D_CLASS_H

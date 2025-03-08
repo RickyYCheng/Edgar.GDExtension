@@ -18,7 +18,6 @@ public static unsafe class RoomDescriptionGrid2DHelper
     public static IntPtr csharp_obj_alloc_room_description_grid_2d(bool is_corridor)
     {
         // var obj = new RoomDescriptionGrid2D(is_corridor != 0, []);
-        GlobalHelper.GDPrint(is_corridor.ToString());
         var obj = new object();
         var handle = GCHandle.Alloc(obj);
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
