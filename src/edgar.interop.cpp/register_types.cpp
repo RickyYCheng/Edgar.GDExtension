@@ -7,6 +7,7 @@
 #include "door_grid_2d.h"
 #include "manual_door_mode_grid_2d.h"
 #include "room_template_grid_2d.h"
+#include "room_description_grid_2d.h"
 
 using namespace godot;
 
@@ -48,6 +49,7 @@ void initialize_types(ModuleInitializationLevel p_level) {
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();
     ClassDB::register_class<RoomTemplateGrid2D>();
+    ClassDB::register_class<RoomDescriptionGrid2D>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {

@@ -13,3 +13,4 @@ func _ready() -> void:
 		doors,
 		[RoomTemplateGrid2D.IDENTITY]
 	)
+	var room := RoomDescriptionGrid2D.cons(false)
