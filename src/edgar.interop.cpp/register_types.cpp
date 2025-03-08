@@ -19,12 +19,20 @@ void *get_doorhandle_from_door_array(TypedArray<DoorGrid2D> *array_Ptr, int idx)
     return door->get_csharp_obj_handle();
 }
 
+char get_byte_from_packed_byte_array(PackedByteArray *array_Ptr, int idx) {
+    return (*array_Ptr)[idx];
+}
+
 void initialize_types(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
     }
 
-    csharp_init_global(&gdprint, &get_doorhandle_from_door_array);
+    csharp_init_global(
+        &gdprint, 
+        &get_doorhandle_from_door_array,
+        &get_byte_from_packed_byte_array
+    );
     ClassDB::register_class<DoorGrid2D>();
     ClassDB::register_class<ManualDoorModeGrid2D>();
     ClassDB::register_class<RoomTemplateGrid2D>();

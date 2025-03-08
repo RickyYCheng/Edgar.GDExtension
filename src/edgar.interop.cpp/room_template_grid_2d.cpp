@@ -9,7 +9,8 @@ using namespace godot;
 
 RoomTemplateGrid2D *RoomTemplateGrid2D::cons(String name, PackedVector2Array outline, ManualDoorModeGrid2D *doors, PackedInt32Array transformations) {
     RoomTemplateGrid2D *self = memnew(RoomTemplateGrid2D);
-    // self->csharp_obj_handle = csharp_obj_alloc_manual_door_mode_grid_2d(&doors, doors.size());
+    auto name_buffer = name.to_utf8_buffer();
+    self->csharp_obj_handle = csharp_obj_alloc_room_template_grid_2d(&name_buffer, name_buffer.size());
     return self;
 }
 

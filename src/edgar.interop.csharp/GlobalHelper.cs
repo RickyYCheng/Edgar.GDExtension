@@ -9,25 +9,34 @@ public delegate void GDPrintDelegate(string str);
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate IntPtr GetDoorHandleFromDoorArrayDelegate(IntPtr array_Ptr, int idx);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate byte GetByteFromPackedByteArrayDelegate(IntPtr array_Ptr, int idx);
+
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint => Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint_Ptr);
     public static GetDoorHandleFromDoorArrayDelegate GetHandleFromArray => Marshal.GetDelegateForFunctionPointer<GetDoorHandleFromDoorArrayDelegate>(get_doorhandle_from_door_array_Ptr);
+    public static GetByteFromPackedByteArrayDelegate GetByteFromPackedByteArray => Marshal.GetDelegateForFunctionPointer<GetByteFromPackedByteArrayDelegate>(get_byte_from_packed_byte_array_Ptr);
 }
 
 public static partial class GlobalHelper 
 {
     private static IntPtr gdprint_Ptr;
     private static IntPtr get_doorhandle_from_door_array_Ptr;
+    private static IntPtr get_byte_from_packed_byte_array_Ptr;
 }
 
 public static partial class GlobalHelper 
 {
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
-    public static void csharp_init_global(IntPtr gdprint, IntPtr get_doorhandle_from_door_array) 
+    public static void csharp_init_global(
+        IntPtr gdprint, 
+        IntPtr get_doorhandle_from_door_array,
+        IntPtr get_byte_from_packed_byte_array) 
     {
         gdprint_Ptr = gdprint;
         get_doorhandle_from_door_array_Ptr = get_doorhandle_from_door_array;
+        get_byte_from_packed_byte_array_Ptr = get_byte_from_packed_byte_array;
     }
 
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
