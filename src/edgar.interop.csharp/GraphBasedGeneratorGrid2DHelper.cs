@@ -30,7 +30,7 @@ public static unsafe class GraphBasedGeneratorGrid2DHelper
         {
             fixed(char *room_ptr = room.Room) 
             {
-                GlobalHelper.AddLayoutRoom(rooms_Ptr, room_ptr, room.IsCorridor, room.Position.X, room.Position.Y);
+                GlobalHelper.AddLayoutRoom(rooms_Ptr, room_ptr, room.IsCorridor, room.Position.X, room.Position.Y, (int)room.Transformation);
             }
         }
     }

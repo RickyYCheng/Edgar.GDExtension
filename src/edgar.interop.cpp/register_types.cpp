@@ -41,11 +41,12 @@ void *get_room_template_handle_from_room_template_array(TypedArray<RoomTemplateG
     return room_template->get_csharp_obj_handle();
 }
 
-void add_layout_room(TypedArray<Dictionary> *rooms, const char16_t *room, bool is_corridor, int posx, int posy) {
+void add_layout_room(TypedArray<Dictionary> *rooms, const char16_t *room, bool is_corridor, int posx, int posy, int transformation) {
     Dictionary dict;
     dict["room"] = String(room);
     dict["is_corridor"] = is_corridor;
     dict["position"] = Vector2i(posx, posy);
+    dict["transformation"] = transformation;
     rooms->push_back(dict);
 }
 
