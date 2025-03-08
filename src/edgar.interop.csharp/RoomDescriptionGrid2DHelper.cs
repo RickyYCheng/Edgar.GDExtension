@@ -3,12 +3,12 @@ namespace Edgar.Interop.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-using Edgar.Geometry;
 using Edgar.GraphBasedGenerator.Grid2D;
 
 public static unsafe class RoomDescriptionGrid2DHelper
 {
+    public static readonly Dictionary<RoomDescriptionGrid2D, IntPtr> Mapping = [];
+
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
     // because we don't need to modify C# objects directly in C++.
@@ -27,6 +27,9 @@ public static unsafe class RoomDescriptionGrid2DHelper
         var obj = new RoomDescriptionGrid2D(is_corridor, room_templates);
         var handle = GCHandle.Alloc(obj);
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
+        
+        Mapping[obj] = obj_handle_Ptr;
+        
         return obj_handle_Ptr;
     }
 }
