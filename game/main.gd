@@ -15,10 +15,10 @@ func _ready() -> void:
 	)
 	var room_description := RoomDescriptionGrid2D.cons(false, [room_template])
 	
-	var level_description := LevelDescriptionGrid2D.new()
+	var level_description := LevelDescriptionGrid2D.cons()
 	level_description.add_room("room 1", room_description)
 	level_description.add_room("room 2", room_description)
 	level_description.add_connection("room 1", "room 2")
 	
-	var generator = GraphBasedGeneratorGrid2D.cons(level_description)
+	var generator := GraphBasedGeneratorGrid2D.cons(level_description)
 	print(generator.generate_layout())

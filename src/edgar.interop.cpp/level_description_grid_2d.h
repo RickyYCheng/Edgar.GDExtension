@@ -16,7 +16,7 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_level_description_grid_2d();
+    void *csharp_obj_alloc_level_description_grid_2d(int minimum_room_distance = 0);
     void csharp_level_description_grid_2d_add_room(void *level_description_Ptr, void *room_name_buffer, int room_name_size, void *room_description_Ptr);
     void csharp_level_description_grid_2d_add_connection(void *level_description_Ptr, void *room_1_buffer, int room_1_size, void *room_2_buffer, int room_2_size);
 }
@@ -46,7 +46,7 @@ public:
     void add_room(String room, RoomDescriptionGrid2D *room_description);
     void add_connection(String room1, String room2);
 
-    static LevelDescriptionGrid2D *cons();
+    static LevelDescriptionGrid2D *cons(int minimum_room_distance);
 };
 
 #endif // LEVEL_DESCRIPTION_GRID_2D_CLASS_H

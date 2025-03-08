@@ -16,9 +16,9 @@ public static unsafe class LevelDescriptionGrid2DHelper
     // If such a need arises, modifications can be done through C# functions.
     // The key focus is on referencing rather than direct access (address)
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_level_description_grid_2d))]
-    public static IntPtr csharp_obj_alloc_level_description_grid_2d()
+    public static IntPtr csharp_obj_alloc_level_description_grid_2d(int minimum_room_distance)
     {
-        var obj = new LevelDescriptionGrid2D<string>();
+        var obj = new LevelDescriptionGrid2D<string>() { MinimumRoomDistance = minimum_room_distance };
         var handle = GCHandle.Alloc(obj);
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;

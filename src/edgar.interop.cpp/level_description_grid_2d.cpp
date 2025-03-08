@@ -6,9 +6,9 @@
 
 using namespace godot;
 
-LevelDescriptionGrid2D *LevelDescriptionGrid2D::cons() {
+LevelDescriptionGrid2D *LevelDescriptionGrid2D::cons(int minimum_room_distance = 0) {
     LevelDescriptionGrid2D *self = memnew(LevelDescriptionGrid2D);
-    self->csharp_obj_handle = csharp_obj_alloc_level_description_grid_2d();
+    self->csharp_obj_handle = csharp_obj_alloc_level_description_grid_2d(minimum_room_distance);
     return self;
 }
 
@@ -25,7 +25,7 @@ void LevelDescriptionGrid2D::add_connection(String room1, String room2) {
 
 void LevelDescriptionGrid2D::_bind_methods() {
     // p_name must be same to the func name
-    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons"), &LevelDescriptionGrid2D::cons);
+    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "minimum_room_distance"), &LevelDescriptionGrid2D::cons, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("add_room", "room", "room_description"), &LevelDescriptionGrid2D::add_room);
     ClassDB::bind_method(D_METHOD("add_connection", "room1", "room2"), &LevelDescriptionGrid2D::add_connection);
 }
