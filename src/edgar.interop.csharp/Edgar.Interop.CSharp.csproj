@@ -2,8 +2,11 @@
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
-		<PublishAot>true</PublishAot>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <PublishAot>true</PublishAot>
+        <IsAotCompatible>true</IsAotCompatible>
+		<StripSymbols>true</StripSymbols>
+		<OptimizationPreference>Speed</OptimizationPreference>
 	</PropertyGroup>
 	
 	<Target Name="CopyNativeFilesPublish" AfterTargets="Publish">
