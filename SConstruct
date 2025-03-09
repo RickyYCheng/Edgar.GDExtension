@@ -22,8 +22,6 @@ env.Append(CPPPATH=["src/edgar.interop.cpp"])
 env.Append(LIBS=["Edgar.Interop.CSharp"])
 env.Append(LIBPATH="game/bin")
 
-# sources = Glob("src/edgar.interop.cpp/*.cpp")
-
 import glob
 sources = glob.glob("src/edgar.interop.cpp/**/*.cpp", recursive=True)
 sources = [File(s) for s in sources]
