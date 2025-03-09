@@ -4,6 +4,7 @@ import sys
 
 env = SConscript("godot-cpp/SConstruct")
 
+# TODO: handle macos
 csharp_build_code = os.system(f"dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin /p:SConsSuffix={env["suffix"]}")
 if csharp_build_code != 0:
     sys.exit(1)
