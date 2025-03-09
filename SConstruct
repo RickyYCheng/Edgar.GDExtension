@@ -2,11 +2,11 @@
 import os
 import sys
 
-csharp_build_code = os.system("dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin")
+env = SConscript("godot-cpp/SConstruct")
+
+csharp_build_code = os.system(f"dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin /p:SConsSuffix={env["suffix"]}")
 if csharp_build_code != 0:
     sys.exit(1)
-
-env = SConscript("godot-cpp/SConstruct")
 
 # For the reference:
 # - CCFLAGS are compilation flags shared between C and C++
@@ -19,7 +19,7 @@ env = SConscript("godot-cpp/SConstruct")
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/edgar.interop.cpp"])
 
-env.Append(LIBS=["Edgar.Interop.CSharp"])
+env.Append(LIBS=[f"edgar.interop.csharp{env["suffix"]}"])
 env.Append(LIBPATH="game/bin")
 
 import glob
@@ -28,12 +28,12 @@ sources = [File(s) for s in sources]
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        f"game/bin/Edgar.Interop.Cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
+        f"game/bin/edgar.interop.cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        f"game/bin/Edgar.Interop.Cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
+        f"game/bin/edgar.interop.cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
         source=sources,
     )
 

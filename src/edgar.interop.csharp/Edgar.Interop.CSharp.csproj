@@ -7,8 +7,14 @@
         <IsAotCompatible>true</IsAotCompatible>
 		<StripSymbols>true</StripSymbols>
 		<OptimizationPreference>Speed</OptimizationPreference>
+		<SConsSuffix Condition=" '$(SConsSuffix)' == '' ">_invalid_scons_suffix</SConsSuffix>
+        <AssemblyName>edgar.interop.csharp$(SConsSuffix)</AssemblyName>
 	</PropertyGroup>
-	
+
+	<Target Name="CustomTarget" BeforeTargets="Publish">
+		<Message Text="SConsSuffix: $(SConsSuffix)" Importance="High" />
+	</Target>
+
 	<Target Name="CopyNativeFilesPublish" AfterTargets="Publish">
 		<ItemGroup>
 			<NativeFiles Include="bin/Release/$(TargetFramework)/$(RuntimeIdentifier)/native/*.*" />
