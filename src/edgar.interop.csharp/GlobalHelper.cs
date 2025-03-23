@@ -35,8 +35,9 @@ public static partial class GlobalHelper
     public static AddLayoutRoomDelegate AddLayoutRoom { get; private set; }
 }
 
-public static partial class GlobalHelper
+public static unsafe partial class GlobalHelper
 {
+
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_init_global))]
     public static void csharp_init_global(
         IntPtr gdprint,

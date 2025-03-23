@@ -18,8 +18,8 @@ using namespace godot;
 
 extern "C" {
     void *csharp_obj_alloc_room_template_grid_2d(
-        void *name_buffer, 
-        int name_buffer_size,
+        void *name, 
+        int name_length,
         void *outline,
         int outline_size,
         void *doors_handle,
@@ -59,7 +59,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static Ref<RoomTemplateGrid2D> cons(StringName name, PackedVector2Array outline, Ref<ManualDoorModeGrid2D> doors, PackedInt32Array transformations);
+    static Ref<RoomTemplateGrid2D> cons(String name, PackedVector2Array outline, Ref<ManualDoorModeGrid2D> doors, PackedInt32Array transformations);
 };
 
 VARIANT_ENUM_CAST(RoomTemplateGrid2D::TransformationGrid2D);

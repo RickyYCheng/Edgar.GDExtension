@@ -24,34 +24,19 @@ public static unsafe class LevelDescriptionGrid2DHelper
         return obj_handle_Ptr;
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2d_add_room))]
-    public static void csharp_level_description_grid_2d_add_room(IntPtr level_description_Ptr, IntPtr room_name_buffer, int room_name_size, IntPtr room_description_Ptr)
+    public static void csharp_level_description_grid_2d_add_room(IntPtr level_description_Ptr, IntPtr room, int room_length, IntPtr room_description_Ptr)
     {
         var level_description = (LevelDescriptionGrid2D<string>)GCHandle.FromIntPtr(level_description_Ptr).Target;
-        var room_name_builder = new StringBuilder(room_name_size);
-        for (var i = 0; i < room_name_size; i++)
-        {
-            room_name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(room_name_buffer, i));
-        }
-        var room_name = room_name_builder.ToString();
+        var room_name = Encoding.UTF32.GetString((byte*)room, room_length * 4);
         var room_description = (RoomDescriptionGrid2D)GCHandle.FromIntPtr(room_description_Ptr).Target;
         level_description.AddRoom(room_name, room_description);
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_level_description_grid_2d_add_connection))]
-    public static void csharp_level_description_grid_2d_add_connection(IntPtr level_description_Ptr, IntPtr room1_buffer, int room1_size, IntPtr room2_buffer, int room2_size)
+    public static void csharp_level_description_grid_2d_add_connection(IntPtr level_description_Ptr, IntPtr room1_Ptr, int room1_length, IntPtr room2_Ptr, int room2_length)
     {
         var level_description = (LevelDescriptionGrid2D<string>)GCHandle.FromIntPtr(level_description_Ptr).Target;
-        var room_name_builder = new StringBuilder(Math.Max(room1_size, room2_size));
-        for (var i = 0; i < room1_size; i++)
-        {
-            room_name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(room1_buffer, i));
-        }
-        var room1 = room_name_builder.ToString();
-        room_name_builder.Clear();
-        for (var i = 0; i < room1_size; i++)
-        {
-            room_name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(room2_buffer, i));
-        }
-        var room2 = room_name_builder.ToString();
+        var room1 = Encoding.UTF32.GetString((byte*)room1_Ptr, room1_length * 4);
+        var room2 = Encoding.UTF32.GetString((byte*)room2_Ptr, room2_length * 4);
         level_description.AddConnection(room1, room2);
     }
 }

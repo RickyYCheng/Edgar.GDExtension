@@ -16,8 +16,8 @@ public static unsafe class RoomTemplateGrid2DHelper
     // The key focus is on referencing rather than direct access (address)
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_room_template_grid_2d))]
     public static IntPtr csharp_obj_alloc_room_template_grid_2d(
-        IntPtr name_buffer, 
-        int name_buffer_size,
+        IntPtr name_Ptr, 
+        int name_length,
         IntPtr outline_Ptr,
         int outline_size,
         IntPtr doors_handle,
@@ -25,12 +25,7 @@ public static unsafe class RoomTemplateGrid2DHelper
         int transformations_size
     )
     {
-        var name_builder = new StringBuilder(name_buffer_size);
-        for (var i = 0; i < name_buffer_size; i++)
-        {
-            name_builder.Append((char)GlobalHelper.GetByteFromPackedByteArray(name_buffer, i));
-        }
-        var name = name_builder.ToString();
+        var name = Encoding.UTF32.GetString((byte*)name_Ptr, name_length * 4);
 
         var outline = new List<Vector2Int>(outline_size);
         for (var i = outline_size - 1; i >= 0; i--)
