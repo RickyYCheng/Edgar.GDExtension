@@ -38,7 +38,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static DoorGrid2D *cons(Vector2i from, Vector2i to);
+    static Ref<DoorGrid2D> cons(Vector2i from, Vector2i to);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H

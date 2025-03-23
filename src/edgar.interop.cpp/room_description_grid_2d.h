@@ -40,7 +40,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static RoomDescriptionGrid2D *cons(bool is_corridor, TypedArray<RoomTemplateGrid2D> room_templates);
+    static Ref<RoomDescriptionGrid2D> cons(bool is_corridor, TypedArray<RoomTemplateGrid2D> room_templates);
 };
 
 #endif // ROOM_DESCRIPTION_GRID_2D_CLASS_H

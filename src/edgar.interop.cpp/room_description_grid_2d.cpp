@@ -7,7 +7,7 @@
 
 using namespace godot;
 
-RoomDescriptionGrid2D *RoomDescriptionGrid2D::cons(bool is_corridor, TypedArray<RoomTemplateGrid2D> room_templates) {
+Ref<RoomDescriptionGrid2D> RoomDescriptionGrid2D::cons(bool is_corridor, TypedArray<RoomTemplateGrid2D> room_templates) {
     RoomDescriptionGrid2D *self = memnew(RoomDescriptionGrid2D);
     self->csharp_obj_handle = csharp_obj_alloc_room_description_grid_2d(is_corridor, &room_templates, room_templates.size());
     return self;

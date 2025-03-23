@@ -39,7 +39,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static ManualDoorModeGrid2D *cons(TypedArray<DoorGrid2D> doors);
+    static Ref<ManualDoorModeGrid2D> cons(TypedArray<DoorGrid2D> doors);
 };
 
 #endif // MANUAL_DOOR_MODE_GRID_2D_CLASS_H

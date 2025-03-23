@@ -6,7 +6,7 @@
 
 using namespace godot;
 
-ManualDoorModeGrid2D *ManualDoorModeGrid2D::cons(TypedArray<DoorGrid2D> doors) {
+Ref<ManualDoorModeGrid2D> ManualDoorModeGrid2D::cons(TypedArray<DoorGrid2D> doors) {
     ManualDoorModeGrid2D *self = memnew(ManualDoorModeGrid2D);
     self->csharp_obj_handle = csharp_obj_alloc_manual_door_mode_grid_2d(&doors, doors.size());
     return self;

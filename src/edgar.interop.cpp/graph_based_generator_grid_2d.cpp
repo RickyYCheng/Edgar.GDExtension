@@ -6,7 +6,7 @@
 
 using namespace godot;
 
-GraphBasedGeneratorGrid2D *GraphBasedGeneratorGrid2D::cons(LevelDescriptionGrid2D *level_description) {
+Ref<GraphBasedGeneratorGrid2D> GraphBasedGeneratorGrid2D::cons(Ref<LevelDescriptionGrid2D> level_description) {
     GraphBasedGeneratorGrid2D *self = memnew(GraphBasedGeneratorGrid2D);
     self->csharp_obj_handle = csharp_obj_alloc_graph_based_generator_grid_2d(level_description->get_csharp_obj_handle());
     return self;

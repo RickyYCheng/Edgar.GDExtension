@@ -43,7 +43,7 @@ public:
 
     Dictionary generate_layout();
 
-    static GraphBasedGeneratorGrid2D *cons(LevelDescriptionGrid2D *level_description);
+    static Ref<GraphBasedGeneratorGrid2D> cons(Ref<LevelDescriptionGrid2D> level_description);
 };
 
 #endif // GRAPH_BASED_GENERATOR_GRID_2D_CLASS_H

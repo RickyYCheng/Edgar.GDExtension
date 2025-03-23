@@ -6,13 +6,13 @@
 
 using namespace godot;
 
-LevelDescriptionGrid2D *LevelDescriptionGrid2D::cons(int minimum_room_distance = 0) {
+Ref<LevelDescriptionGrid2D> LevelDescriptionGrid2D::cons(int minimum_room_distance = 0) {
     LevelDescriptionGrid2D *self = memnew(LevelDescriptionGrid2D);
     self->csharp_obj_handle = csharp_obj_alloc_level_description_grid_2d(minimum_room_distance);
     return self;
 }
 
-void LevelDescriptionGrid2D::add_room(String room, RoomDescriptionGrid2D *room_description) {
+void LevelDescriptionGrid2D::add_room(String room, Ref<RoomDescriptionGrid2D> room_description) {
     PackedByteArray room_buffer = room.to_utf8_buffer();
     csharp_level_description_grid_2d_add_room(this->csharp_obj_handle, &room_buffer, room_buffer.size(), room_description->get_csharp_obj_handle());
 }
