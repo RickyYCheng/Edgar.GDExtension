@@ -12,12 +12,12 @@ Ref<LevelDescriptionGrid2D> LevelDescriptionGrid2D::cons(int minimum_room_distan
     return self;
 }
 
-void LevelDescriptionGrid2D::add_room(String room, Ref<RoomDescriptionGrid2D> room_description) {
+void LevelDescriptionGrid2D::add_room(StringName room, Ref<RoomDescriptionGrid2D> room_description) {
     PackedByteArray room_buffer = room.to_utf8_buffer();
     csharp_level_description_grid_2d_add_room(this->csharp_obj_handle, &room_buffer, room_buffer.size(), room_description->get_csharp_obj_handle());
 }
 
-void LevelDescriptionGrid2D::add_connection(String room1, String room2) {
+void LevelDescriptionGrid2D::add_connection(StringName room1, StringName room2) {
     PackedByteArray room1_buffer = room1.to_utf8_buffer();
     PackedByteArray room2_buffer = room2.to_utf8_buffer();
     csharp_level_description_grid_2d_add_connection(this->csharp_obj_handle, &room1_buffer, room1_buffer.size(), &room2_buffer, room2_buffer.size());

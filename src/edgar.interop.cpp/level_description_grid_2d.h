@@ -43,8 +43,8 @@ public:
         return this->csharp_obj_handle;
     }
 
-    void add_room(String room, Ref<RoomDescriptionGrid2D> room_description);
-    void add_connection(String room1, String room2);
+    void add_room(StringName room, Ref<RoomDescriptionGrid2D> room_description);
+    void add_connection(StringName room1, StringName room2);
 
     static Ref<LevelDescriptionGrid2D> cons(int minimum_room_distance);
 };
