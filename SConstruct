@@ -24,7 +24,7 @@ if csharp_build_code != 0:
 env.Append(CPPPATH=["src/edgar.interop.cpp"])
 
 env.Append(LIBS=[f"edgar.interop.csharp{suffix}"])
-env.Append(LIBPATH="game/bin")
+env.Append(LIBPATH="game/edgar.godot.gdextension/bin")
 
 import glob
 sources = glob.glob("src/edgar.interop.cpp/**/*.cpp", recursive=True)
@@ -32,13 +32,13 @@ sources = [File(s) for s in sources]
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        # f"game/bin/edgar.interop.cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
+        # f"game/edgar.godot.gdextension/bin/edgar.interop.cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
         f"game/edgar.godot.gdextension/bin/edgar.interop.cpp.{env["platform"]}.framework/edgar.gdextension.{env["platform"]}",
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        # f"game/bin/edgar.interop.cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
+        # f"game/edgar.godot.gdextension/bin/edgar.interop.cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
         f"game/edgar.godot.gdextension/bin/edgar.interop.cpp{suffix}{env["SHLIBSUFFIX"]}",
         source=sources,
     )

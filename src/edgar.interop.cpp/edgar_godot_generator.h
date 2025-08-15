@@ -38,7 +38,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static Ref<EdgarGodotGenerator> cons(Vector2i from, Vector2i to);
+    static Ref<EdgarGodotGenerator> cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H

@@ -4,7 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using Edgar.GraphBasedGenerator.Grid2D;
 
-public static class DoorGrid2DHelper
+public static class EdgarGodotGeneratorHelper
 {
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
