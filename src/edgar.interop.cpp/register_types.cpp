@@ -4,7 +4,7 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
-#include "door_grid_2d.h"
+#include "edgar_godot_generator.h"
 
 using namespace godot;
 
@@ -12,8 +12,8 @@ void gdprint(const char *str) {
     UtilityFunctions::print(str);
 }
 
-void *get_doorhandle_from_door_array(TypedArray<DoorGrid2D> *array_Ptr, int idx) {
-    DoorGrid2D *door = Object::cast_to<DoorGrid2D>((*array_Ptr)[idx]);
+void *get_doorhandle_from_door_array(TypedArray<EdgarGodotGenerator> *array_Ptr, int idx) {
+    EdgarGodotGenerator *door = Object::cast_to<EdgarGodotGenerator>((*array_Ptr)[idx]);
     return door->get_csharp_obj_handle();
 }
 
@@ -54,7 +54,7 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &get_int32_from_packed_int32_array,
         &add_layout_room
     );
-    ClassDB::register_class<DoorGrid2D>();
+    ClassDB::register_class<EdgarGodotGenerator>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {

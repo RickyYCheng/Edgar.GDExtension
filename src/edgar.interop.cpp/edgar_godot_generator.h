@@ -15,21 +15,21 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_door_grid_2d(int x1, int y1, int x2, int y2);
+    void *csharp_obj_alloc_edgar_godot_generator(int x1, int y1, int x2, int y2);
 }
 
-class DoorGrid2D : public RefCounted {
-    GDCLASS(DoorGrid2D, RefCounted);
+class EdgarGodotGenerator : public RefCounted {
+    GDCLASS(EdgarGodotGenerator, RefCounted);
 
 protected:
     void *csharp_obj_handle;
     static void _bind_methods();
 
 public:
-    DoorGrid2D() : RefCounted() {
+    EdgarGodotGenerator() : RefCounted() {
         this->csharp_obj_handle = nullptr;
     }
-    ~DoorGrid2D() {
+    ~EdgarGodotGenerator() {
         if (this->csharp_obj_handle == nullptr) return;
         csharp_obj_free(this->csharp_obj_handle);
         this->csharp_obj_handle = nullptr;
@@ -38,7 +38,7 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
-    static Ref<DoorGrid2D> cons(Vector2i from, Vector2i to);
+    static Ref<EdgarGodotGenerator> cons(Vector2i from, Vector2i to);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H

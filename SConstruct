@@ -8,7 +8,7 @@ arch = env["suffix"].split(".")[-1]
 suffix = f".{env["platform"]}.{arch}"
 
 # TODO: handle macos
-csharp_build_code = os.system(f"dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/bin /p:SConsSuffix={suffix}")
+csharp_build_code = os.system(f"dotnet publish src/edgar.interop.csharp --use-current-runtime -o game/edgar.godot.gdextension/bin /p:SConsSuffix={suffix}")
 if csharp_build_code != 0:
     sys.exit(1)
 
@@ -33,13 +33,13 @@ sources = [File(s) for s in sources]
 if env["platform"] == "macos":
     library = env.SharedLibrary(
         # f"game/bin/edgar.interop.cpp.{env["platform"]}.{env["target"]}.framework/edgar.gdextension.{env["platform"]}.{env["target"]}",
-        f"game/bin/edgar.interop.cpp.{env["platform"]}.framework/edgar.gdextension.{env["platform"]}",
+        f"game/edgar.godot.gdextension/bin/edgar.interop.cpp.{env["platform"]}.framework/edgar.gdextension.{env["platform"]}",
         source=sources,
     )
 else:
     library = env.SharedLibrary(
         # f"game/bin/edgar.interop.cpp{env["suffix"]}{env["SHLIBSUFFIX"]}",
-        f"game/bin/edgar.interop.cpp{suffix}{env["SHLIBSUFFIX"]}",
+        f"game/edgar.godot.gdextension/bin/edgar.interop.cpp{suffix}{env["SHLIBSUFFIX"]}",
         source=sources,
     )
 
