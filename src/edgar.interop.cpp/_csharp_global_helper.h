@@ -8,7 +8,6 @@ extern "C" {
         void *get_byte_from_packed_byte_array,
         void *get_vector2_from_packed_vector2_array,
         void *get_int32_from_packed_int32_array,
-        void *get_room_template_handle_from_room_template_array,
         void *add_layout_room
     );
     

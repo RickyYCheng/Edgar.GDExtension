@@ -5,11 +5,6 @@
 #include <godot_cpp/godot.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include "door_grid_2d.h"
-#include "manual_door_mode_grid_2d.h"
-#include "room_template_grid_2d.h"
-#include "room_description_grid_2d.h"
-#include "level_description_grid_2d.h"
-#include "graph_based_generator_grid_2d.h"
 
 using namespace godot;
 
@@ -36,11 +31,6 @@ int get_int32_from_packed_int32_array(PackedInt32Array *array_Ptr, int idx) {
     return (*array_Ptr)[idx];
 }
 
-void *get_room_template_handle_from_room_template_array(TypedArray<RoomTemplateGrid2D> *array_Ptr, int idx) {
-    RoomTemplateGrid2D *room_template = Object::cast_to<RoomTemplateGrid2D>((*array_Ptr)[idx]);
-    return room_template->get_csharp_obj_handle();
-}
-
 void add_layout_room(TypedArray<Dictionary> *rooms, const char16_t *room, bool is_corridor, int posx, int posy, int transformation, const char16_t *room_template) {
     Dictionary dict;
     dict["room"] = String(room);
@@ -62,15 +52,9 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &get_byte_from_packed_byte_array,
         &get_vector2_from_packed_vector2_array,
         &get_int32_from_packed_int32_array,
-        &get_room_template_handle_from_room_template_array,
         &add_layout_room
     );
     ClassDB::register_class<DoorGrid2D>();
-    ClassDB::register_class<ManualDoorModeGrid2D>();
-    ClassDB::register_class<RoomTemplateGrid2D>();
-    ClassDB::register_class<RoomDescriptionGrid2D>();
-    ClassDB::register_class<LevelDescriptionGrid2D>();
-    ClassDB::register_class<GraphBasedGeneratorGrid2D>();
 }
 
 void uninitialize_types(ModuleInitializationLevel p_level) {
