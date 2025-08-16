@@ -9,6 +9,7 @@
 #endif
 
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/resource.hpp>
 
 #include "_csharp_global_helper.h"
 
@@ -41,6 +42,12 @@ public:
     }
 
     static Ref<EdgarGodotGenerator> cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers);
+
+    static Ref<EdgarGodotGenerator> from_resource(Ref<Resource> resource);
+
+    static bool resource_valid(Ref<Resource> resource) {
+        return !resource.is_null() && resource->has_meta("is_edgar_graph");
+    }
 
     Dictionary generate_layout();
 };

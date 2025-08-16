@@ -61,20 +61,6 @@ public unsafe static class EdgarGodotGeneratorHelper
         {
             action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name);
         }
-        //return new Dictionary {
-        //    { "rooms", new Array(layout.Rooms.Select(room => (Variant)new Dictionary
-        //        {
-        //            { "room", room.Room },
-        //            { "position", new Vector2(room.Position.X, room.Position.Y) },
-        //            { "outline", new Array(room.Outline.GetPoints().Select(pt => (Variant)new Vector2(pt.X, pt.Y))) },
-        //            { "is_corridor", room.IsCorridor },
-        //            //{ "transformation", room.Transformation.ToString() },
-        //            { "doors", new Array(room.Doors.Select(door => (Variant)new Dictionary{ { "from_room", door.FromRoom }, { "to_room", door.ToRoom }, { "door_line", new Dictionary { { "from", new Vector2(door.DoorLine.From.X, door.DoorLine.From.Y) }, { "to", new Vector2(door.DoorLine.To.X, door.DoorLine.To.Y) } } } })) },
-        //            { "template", room.RoomTemplate.Name },
-        //            { "description", new Dictionary{ { "is_corridor", room.RoomDescription.IsCorridor }, { "templates", new Array(room.RoomDescription.RoomTemplates.Select(template => (Variant)template.Name)) } } },
-        //        }))
-        //    }
-        //};
     }
     private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
     {
