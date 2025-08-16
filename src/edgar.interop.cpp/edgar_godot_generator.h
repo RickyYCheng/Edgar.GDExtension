@@ -15,7 +15,7 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_edgar_godot_generator(int x1, int y1, int x2, int y2);
+    void *csharp_obj_alloc_edgar_godot_generator(Dictionary *nodes, TypedArray<Dictionary> *edges, TypedArray<Dictionary> *layers);
 }
 
 class EdgarGodotGenerator : public RefCounted {
@@ -38,7 +38,10 @@ public:
     void *get_csharp_obj_handle() {
         return this->csharp_obj_handle;
     }
+
     static Ref<EdgarGodotGenerator> cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers);
+
+    Dictionary generate_layout();
 };
 
 #endif // DOOR_GRID_2D_CLASS_H
