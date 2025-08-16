@@ -3,11 +3,11 @@
 Edgar.GDExtension is the Godot-Cpp binding library for [Edgar-Dotnet](https://github.com/OndrejNepozitek/Edgar-DotNet), implemented via C# Native Aot technology. It aims to provide Edgar usage opportunities for non-Godot-CSharp users.
 
 Please note the following:
-- All Godot object properties in this library are not stored. These objects are merely simple wrappers for C# GCHandle objects. Therefore, for any properties you need to use, please store them yourself.
-- It is recommended to set RoomTemplateGrid2D.name to the resource path, which offers two benefits:
-  1. Resource paths are unique;
-  2. Relying on its caching mechanism, ResourceLoader.Load won't reload repeatedly.
-- All strings are handled as UTF-8.
+- This library serves as a non-C# kernel for [Edgar.Godot](https://github.com/RickyYCheng/Edgar.Godot.git), designed to provide [Edgar](https://github.com/OndrejNepozitek/Edgar-DotNet) APIs for pure GDScript users (non-C#/.NET environments) while maintaining full compatibility with the C# APIs in [Edgar.Godot](https://github.com/RickyYCheng/Edgar.Godot.git). This allows seamless kernel replacement within [Edgar.Godot](https://github.com/RickyYCheng/Edgar.Godot.git) if needed.
+
+- To use this library, you must compile it for your target platform, and the .NET SDK is required during compilation.
+
+- All strings are handled in UTF-8 encoding.
 
 ## Example
 
@@ -15,29 +15,53 @@ Please note the following:
 extends Node
 
 func _ready() -> void:
-	var doors := ManualDoorModeGrid2D.cons([
-		DoorGrid2D.cons(Vector2i(0, 0), Vector2i(0, 1)),
-		DoorGrid2D.cons(Vector2i(0, 1), Vector2i(1, 1)),
-		DoorGrid2D.cons(Vector2i(1, 1), Vector2i(1, 0)),
-		DoorGrid2D.cons(Vector2i(1, 0), Vector2i(0, 0)),
-	])
-	var room_template := RoomTemplateGrid2D.cons(
-		"template",
-		[Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(0, 1)],
-		doors,
-		[RoomTemplateGrid2D.IDENTITY]
-	)
-	var room_description := RoomDescriptionGrid2D.cons(false, [room_template])
-	
-	var level_description := LevelDescriptionGrid2D.cons()
-	level_description.add_room("room 1", room_description)
-	level_description.add_room("room 2", room_description)
-	level_description.add_connection("room 1", "room 2")
-	
-	var generator := GraphBasedGeneratorGrid2D.cons(level_description)
-	print(generator.generate_layout())
-```
-> output:
-```text
-{ "rooms": [{ "room": "room 1", "is_corridor": false, "position": (0, 0), "transformation": 0, "room_template": "template" }, { "room": "room 2",  "is_corridor": false, "position": (-1, 0), "transformation": 0, "room_template": "template" }] }
+	var nodes : Dictionary = { 
+		"_GraphNode_00000": { 
+			"edgar_layer": 1, 
+			"is_corridor_room": false, 
+			"position_offset": Vector2(400.0, 280.0) 
+		}, 
+		"_GraphNode_00001": { 
+			"edgar_layer": 0, 
+			"is_corridor_room": false, 
+			"position_offset": Vector2(80.0, 100.0) 
+		}, 
+		"_GraphNode_28080": { 
+			"edgar_layer": 0, 
+			"is_corridor_room": false, 
+			"position_offset": Vector2(400.0, 100.0) 
+		}, 
+		"_GraphNode_28096": { 
+			"edgar_layer": 0, 
+			"is_corridor_room": false, 
+			"position_offset": Vector2(740.0, 100.0)
+		} 
+	}
+	var edges : Array[Dictionary] = [
+		{ "from_node": "_GraphNode_00001", "to_node": "_GraphNode_28080" }, 
+		{ "from_node": "_GraphNode_28080", "to_node": "_GraphNode_28096" }, 
+		{ "from_node": "_GraphNode_00001", "to_node": "_GraphNode_00000" }
+	]
+	var layers : Array[Dictionary] = [
+		{ 
+			"res://assets/basic.tmj": { 
+				"boundary": [Vector2(0.0, 256.0), Vector2(0.0, 0.0), Vector2(256.0, 0.0), Vector2(256.0, 256.0)], 
+				"doors": [
+					[Vector2(256.0, 96.0), Vector2(256.0, 80.0), Vector2(256.0, 64.0), Vector2(256.0, 48.0), Vector2(256.0, 32.0)], 
+					[Vector2(0.0, 160.0), Vector2(0.0, 176.0), Vector2(0.0, 192.0), Vector2(0.0, 208.0), Vector2(0.0, 224.0)]
+				] 
+			} 
+		}, 
+		{ 
+			"res://assets/limit.tmj": { 
+				"boundary": [Vector2(0.0, -16.0), Vector2(1136.0, -16.0), Vector2(1136.0, 976.0), Vector2(-16.0, 976.0), Vector2(-16.0, 0.0), Vector2(0.0, 0.0), Vector2(0.0, 960.0), Vector2(1120.0, 960.0), Vector2(1120.0, 0.0), Vector2(0.0, 0.0)], 
+				"doors": [
+					[Vector2(0.0, 864.0), Vector2(0.0, 848.0), Vector2(0.0, 832.0), Vector2(0.0, 816.0), Vector2(0.0, 800.0)]
+				] 
+			} 
+		}
+	]
+	var generator := EdgarGodotGenerator.cons(nodes, edges, layers)
+	var layout := generator.generate_layout()
+	print(layout)
 ```
