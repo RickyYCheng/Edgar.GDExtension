@@ -43,6 +43,14 @@ public unsafe static class EdgarGodotGeneratorHelper
         var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
         return obj_handle_Ptr;
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_generator_generate))]
+    public static void csharp_obj_edgar_generator_generate(IntPtr handle_Ptr)
+    {
+        var handle = GCHandle.FromIntPtr(handle_Ptr);
+        var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
+        var layout = generator.GenerateLayout();
+        GlobalHelper.GDPrint(layout.ToString());
+    }
     private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
     {
         var level_description = new LevelDescriptionGrid2D<string>();

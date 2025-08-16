@@ -14,6 +14,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<
 
 Dictionary EdgarGodotGenerator::generate_layout() {
     Dictionary result;
+    csharp_obj_edgar_generator_generate(csharp_obj_handle);
     return result;
 }
 

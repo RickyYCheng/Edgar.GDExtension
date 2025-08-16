@@ -47,4 +47,6 @@ func _ready() -> void:
 			} 
 		}
 	]
-	var generator = EdgarGodotGenerator.cons(nodes, edges, layers)
+	var generator := EdgarGodotGenerator.cons(nodes, edges, layers)
+	var layout := generator.generate_layout()
+	print(layout)
