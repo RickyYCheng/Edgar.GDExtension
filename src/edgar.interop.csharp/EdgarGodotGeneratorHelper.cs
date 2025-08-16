@@ -1,7 +1,9 @@
 ﻿namespace Edgar.Interop.CSharp;
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 using Edgar.Geometry;
@@ -30,6 +32,9 @@ public unsafe static class EdgarGodotGeneratorHelper
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IterEdges_ProceduresDelegate(IntPtr from_node, IntPtr to_node);
 
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void FillRoomDelegate(IntPtr result, string room, int posX, int posY, bool is_corridor, string template_name);
+
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
     // because we don't need to modify C# objects directly in C++.
@@ -44,12 +49,32 @@ public unsafe static class EdgarGodotGeneratorHelper
         return obj_handle_Ptr;
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_generator_generate))]
-    public static void csharp_obj_edgar_generator_generate(IntPtr handle_Ptr)
+    public static void csharp_obj_edgar_generator_generate(IntPtr handle_Ptr, IntPtr rooms_Ptr, IntPtr fill_room_Ptr)
     {
+        var action = Marshal.GetDelegateForFunctionPointer<FillRoomDelegate>(fill_room_Ptr);
+
         var handle = GCHandle.FromIntPtr(handle_Ptr);
         var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
         var layout = generator.GenerateLayout();
-        GlobalHelper.GDPrint(layout.ToString());
+        
+        foreach (var room in layout.Rooms)
+        {
+            action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name);
+        }
+        //return new Dictionary {
+        //    { "rooms", new Array(layout.Rooms.Select(room => (Variant)new Dictionary
+        //        {
+        //            { "room", room.Room },
+        //            { "position", new Vector2(room.Position.X, room.Position.Y) },
+        //            { "outline", new Array(room.Outline.GetPoints().Select(pt => (Variant)new Vector2(pt.X, pt.Y))) },
+        //            { "is_corridor", room.IsCorridor },
+        //            //{ "transformation", room.Transformation.ToString() },
+        //            { "doors", new Array(room.Doors.Select(door => (Variant)new Dictionary{ { "from_room", door.FromRoom }, { "to_room", door.ToRoom }, { "door_line", new Dictionary { { "from", new Vector2(door.DoorLine.From.X, door.DoorLine.From.Y) }, { "to", new Vector2(door.DoorLine.To.X, door.DoorLine.To.Y) } } } })) },
+        //            { "template", room.RoomTemplate.Name },
+        //            { "description", new Dictionary{ { "is_corridor", room.RoomDescription.IsCorridor }, { "templates", new Array(room.RoomDescription.RoomTemplates.Select(template => (Variant)template.Name)) } } },
+        //        }))
+        //    }
+        //};
     }
     private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
     {

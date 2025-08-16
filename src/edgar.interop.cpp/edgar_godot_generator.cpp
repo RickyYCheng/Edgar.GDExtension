@@ -12,9 +12,23 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<
     return self;
 }
 
+void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name) {
+    Dictionary room;
+    room["room"] = name;
+    room["position"] = Vector2(posX, posY);
+    // NOTE: hide outline
+    room["is_corridor"] = is_corridor;
+    room["template"] = template_name;
+    rooms->push_back(room);
+    // NOTE: add transformation
+    // NOTE: hide description
+}
+
 Dictionary EdgarGodotGenerator::generate_layout() {
     Dictionary result;
-    csharp_obj_edgar_generator_generate(csharp_obj_handle);
+    Array rooms;
+    csharp_obj_edgar_generator_generate(csharp_obj_handle, &rooms, &fill_result_dict);
+    result["rooms"] = rooms;
     return result;
 }
 
