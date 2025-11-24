@@ -48,5 +48,16 @@ func _ready() -> void:
 		}
 	]
 	var generator := EdgarGodotGenerator.cons(nodes, edges, layers)
-	var layout := generator.generate_layout()
-	print(layout)
+	var layout_1 := generator.generate_layout()
+	var layout_2 := generator.generate_layout()
+	print(layout_1, "\n")
+	print(layout_2, "\n")
+	prints("[layout comparison]", var_to_str(layout_1) == var_to_str(layout_2), "\n")
+	
+	print("==================================================", "\n")
+	
+	var seeded_layout_1 := generator.generate_layout_with_seed(42)
+	var seeded_layout_2 := generator.generate_layout_with_seed(42)
+	print(seeded_layout_1, "\n")
+	print(seeded_layout_2, "\n")
+	prints("[layout comparison]", var_to_str(seeded_layout_1) == var_to_str(seeded_layout_2), "\n")

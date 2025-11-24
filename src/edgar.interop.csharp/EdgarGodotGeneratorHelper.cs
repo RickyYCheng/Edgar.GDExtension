@@ -62,6 +62,13 @@ public unsafe static class EdgarGodotGeneratorHelper
             action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name);
         }
     }
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_geneartor_inject_seed))]
+    public static void csharp_obj_edgar_geneartor_inject_seed(IntPtr handle_Ptr, int seed)
+    {
+        var handle = GCHandle.FromIntPtr(handle_Ptr);
+        var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
+        generator.InjectRandomGenerator(new(seed));
+    }
     private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
     {
         var level_description = new LevelDescriptionGrid2D<string>();

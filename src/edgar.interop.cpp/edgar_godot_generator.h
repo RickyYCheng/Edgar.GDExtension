@@ -18,6 +18,7 @@ using namespace godot;
 extern "C" {
     void *csharp_obj_alloc_edgar_godot_generator(Dictionary *nodes, TypedArray<Dictionary> *edges, TypedArray<Dictionary> *layers);
     void csharp_obj_edgar_generator_generate(void *handle_Ptr, void *result, void *fill_room);
+    void csharp_obj_edgar_geneartor_inject_seed(void *handle_Ptr, int seed);
 }
 
 class EdgarGodotGenerator : public RefCounted {
@@ -49,7 +50,9 @@ public:
         return !resource.is_null() && resource->has_meta("is_edgar_graph");
     }
 
+    void inject_seed(int seed);
     Dictionary generate_layout();
+    Dictionary generate_layout_with_seed(int seed);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H
