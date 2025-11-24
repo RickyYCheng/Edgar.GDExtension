@@ -67,7 +67,7 @@ Dictionary EdgarGodotGenerator::generate_layout() {
     return result;
 }
 
-Dictionary EdgarGodotGenerator::generate_layout_with_seed(int seed) {
+Dictionary EdgarGodotGenerator::generate_layout_with_seed_injection(int seed) {
     inject_seed(seed);
     return generate_layout();
 }
@@ -77,5 +77,5 @@ void EdgarGodotGenerator::_bind_methods() {
     ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "nodes", "edges", "layers"), &EdgarGodotGenerator::cons);
     ClassDB::bind_method(D_METHOD("inject_seed", "seed"), &EdgarGodotGenerator::inject_seed);
     ClassDB::bind_method(D_METHOD("generate_layout"), &EdgarGodotGenerator::generate_layout);
-    ClassDB::bind_method(D_METHOD("generate_layout_with_seed", "seed"), &EdgarGodotGenerator::generate_layout_with_seed);
+    ClassDB::bind_method(D_METHOD("generate_layout_with_seed_injection", "seed"), &EdgarGodotGenerator::generate_layout_with_seed_injection);
 }

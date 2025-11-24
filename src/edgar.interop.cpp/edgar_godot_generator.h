@@ -52,7 +52,7 @@ public:
 
     void inject_seed(int seed);
     Dictionary generate_layout();
-    Dictionary generate_layout_with_seed(int seed);
+    Dictionary generate_layout_with_seed_injection(int seed);
 };
 
 #endif // DOOR_GRID_2D_CLASS_H

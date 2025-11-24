@@ -56,8 +56,8 @@ func _ready() -> void:
 	
 	print("==================================================", "\n")
 	
-	var seeded_layout_1 := generator.generate_layout_with_seed(42)
-	var seeded_layout_2 := generator.generate_layout_with_seed(42)
+	var seeded_layout_1 := generator.generate_layout_with_seed_injection(42)
+	var seeded_layout_2 := generator.generate_layout_with_seed_injection(42)
 	print(seeded_layout_1, "\n")
 	print(seeded_layout_2, "\n")
 	prints("[layout comparison]", var_to_str(seeded_layout_1) == var_to_str(seeded_layout_2), "\n")
