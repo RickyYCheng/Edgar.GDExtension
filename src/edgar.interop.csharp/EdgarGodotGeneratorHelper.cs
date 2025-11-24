@@ -33,7 +33,10 @@ public unsafe static class EdgarGodotGeneratorHelper
     public delegate void IterEdges_ProceduresDelegate(IntPtr from_node, IntPtr to_node);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void FillRoomDelegate(IntPtr result, string room, int posX, int posY, bool is_corridor, string template_name);
+    public delegate void FillRoomDelegate(IntPtr result, string room, int posX, int posY, bool is_corridor, string template_name, int transformation);
+
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    public delegate void IterTransformations_ProceduresDelegate(int transformation);
 
     // Use 'normal' instead of 'pinned' as 'pinned' can be troublesome when dealing with object-to-object references
     // We only need to save a unique identifier for C# objects in C++, not the actual address,
@@ -59,7 +62,7 @@ public unsafe static class EdgarGodotGeneratorHelper
         
         foreach (var room in layout.Rooms)
         {
-            action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name);
+            action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name, (int)room.Transformation);
         }
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_geneartor_inject_seed))]
@@ -90,8 +93,15 @@ public unsafe static class EdgarGodotGeneratorHelper
                     GlobalHelper.IterDoor(door, Marshal.GetFunctionPointerForDelegate<IterDoor_ProceduresDelegate>((x1, y1, x2, y2)
                         => doors_list.Add(new(new(x1, y1), new(x2, y2)))))));
 
+                List<TransformationGrid2D> transformations = null;
+                GlobalHelper.IterTransformations(lnk, Marshal.GetFunctionPointerForDelegate<IterTransformations_ProceduresDelegate>(transformation =>
+                {
+                    transformations ??= [];
+                    transformations.Add((TransformationGrid2D)transformation);
+                }));
+
                 var manual_door = new ManualDoorModeGrid2D(doors_list);
-                var room_template = new RoomTemplateGrid2D(boundary, manual_door, Marshal.PtrToStringUTF8(name));
+                var room_template = new RoomTemplateGrid2D(boundary, manual_door, Marshal.PtrToStringUTF8(name), allowedTransformations: transformations);
                 templates.Add(room_template);
             }
             GlobalHelper.IterLayer(layer, Marshal.GetFunctionPointerForDelegate<IterLayer_ProceduresDelegate>(IterLayer));

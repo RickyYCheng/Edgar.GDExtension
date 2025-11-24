@@ -98,6 +98,20 @@ void iter_edges(TypedArray<Dictionary> *edges, void *csharp_delegate) {
     }
 }
 
+void iter_transformations(Dictionary *lnk, void *csharp_delegate) {
+    if (!lnk->has("transformations")) 
+        return;
+    
+    auto action = (void (*)(int))csharp_delegate;
+    
+    Array transformations = (*lnk)["transformations"];
+    auto transformations_size = transformations.size();
+    for (auto i = 0; i < transformations_size; i++) {
+        int transformation = transformations[i];
+        action(transformation);
+    }
+}
+
 void initialize_types(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
@@ -112,7 +126,8 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &iter_doors,
         &iter_door,
         &iter_nodes,
-        &iter_edges
+        &iter_edges,
+        &iter_transformations
     );
     ClassDB::register_class<EdgarGodotGenerator>();
 }

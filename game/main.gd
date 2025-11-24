@@ -35,7 +35,8 @@ func _ready() -> void:
 				"doors": [
 					[Vector2(256.0, 96.0), Vector2(256.0, 80.0), Vector2(256.0, 64.0), Vector2(256.0, 48.0), Vector2(256.0, 32.0)], 
 					[Vector2(0.0, 160.0), Vector2(0.0, 176.0), Vector2(0.0, 192.0), Vector2(0.0, 208.0), Vector2(0.0, 224.0)]
-				] 
+				],
+				"transformations": [0, 1, 2, 3, 4, 5, 6, 7]
 			} 
 		}, 
 		{ 
@@ -43,7 +44,8 @@ func _ready() -> void:
 				"boundary": [Vector2(0.0, -16.0), Vector2(1136.0, -16.0), Vector2(1136.0, 976.0), Vector2(-16.0, 976.0), Vector2(-16.0, 0.0), Vector2(0.0, 0.0), Vector2(0.0, 960.0), Vector2(1120.0, 960.0), Vector2(1120.0, 0.0), Vector2(0.0, 0.0)], 
 				"doors": [
 					[Vector2(0.0, 864.0), Vector2(0.0, 848.0), Vector2(0.0, 832.0), Vector2(0.0, 816.0), Vector2(0.0, 800.0)]
-				] 
+				],
+				# no transformations (default [Identity])
 			} 
 		}
 	]

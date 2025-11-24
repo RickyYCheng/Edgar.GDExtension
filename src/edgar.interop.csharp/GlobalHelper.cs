@@ -30,6 +30,9 @@ public delegate void IterNodesDelegate(IntPtr nodes, IntPtr csharp_delegate);
 [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 public delegate void IterEdgesDelegate(IntPtr edges, IntPtr csharp_delegate);
 
+[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+public delegate void IterTransformationsDelegate(IntPtr lnk, IntPtr csharp_delegate);
+
 public static partial class GlobalHelper
 {
     public static GDPrintDelegate GDPrint { get; private set; }
@@ -41,6 +44,7 @@ public static partial class GlobalHelper
     public static IterDoorDelegate IterDoor { get; private set; }
     public static IterNodesDelegate IterNodes { get; private set; }
     public static IterEdgesDelegate IterEdges { get; private set; }
+    public static IterTransformationsDelegate IterTransformations { get; private set; }
 }
 
 public static unsafe partial class GlobalHelper
@@ -56,7 +60,8 @@ public static unsafe partial class GlobalHelper
         IntPtr iterDoors,
         IntPtr iterDoor,
         IntPtr iterNodes,
-        IntPtr iterEdges
+        IntPtr iterEdges,
+        IntPtr iterTransformations
     )
     {
         GDPrint = Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint);
@@ -68,6 +73,7 @@ public static unsafe partial class GlobalHelper
         IterDoor = Marshal.GetDelegateForFunctionPointer<IterDoorDelegate>(iterDoor);
         IterNodes = Marshal.GetDelegateForFunctionPointer<IterNodesDelegate>(iterNodes);
         IterEdges = Marshal.GetDelegateForFunctionPointer<IterEdgesDelegate>(iterEdges);
+        IterTransformations = Marshal.GetDelegateForFunctionPointer<IterTransformationsDelegate>(iterTransformations);
     }
 }
 

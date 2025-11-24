@@ -11,7 +11,8 @@ extern "C" {
         void *iter_doors,
         void *iter_door,
         void *iter_nodes,
-        void *iter_edges
+        void *iter_edges,
+        void *iter_transformations
     );
     
     void csharp_obj_free(void *csharp_obj_handle_Ptr);

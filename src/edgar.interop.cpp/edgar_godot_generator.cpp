@@ -43,16 +43,14 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
     return cons(nodes, edges, layers);
 }
 
-void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name) {
+void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation) {
     Dictionary room;
     room["room"] = name;
     room["position"] = Vector2(posX, posY);
-    // NOTE: hide outline
     room["is_corridor"] = is_corridor;
     room["template"] = template_name;
+    room["transformation"] = transformation;
     rooms->push_back(room);
-    // NOTE: add transformation
-    // NOTE: hide description
 }
 
 void EdgarGodotGenerator::inject_seed(int seed) {
