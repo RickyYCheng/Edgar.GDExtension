@@ -33,7 +33,7 @@ public unsafe static class EdgarGodotGeneratorHelper
     public delegate void IterEdges_ProceduresDelegate(IntPtr from_node, IntPtr to_node);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void FillRoomDelegate(IntPtr result, string room, int posX, int posY, bool is_corridor, string template_name, int transformation);
+    public delegate void FillRoomDelegate(IntPtr result, char *room, int posX, int posY, bool is_corridor, char* template_name, int transformation, int *outline_pts, int outline_size);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IterTransformations_ProceduresDelegate(int transformation);
@@ -62,7 +62,13 @@ public unsafe static class EdgarGodotGeneratorHelper
         
         foreach (var room in layout.Rooms)
         {
-            action(rooms_Ptr, room.Room, room.Position.X, room.Position.Y, room.IsCorridor, room.RoomTemplate.Name, (int)room.Transformation);
+            var outline = room.Outline.GetPoints().SelectMany(p => new int[] { p.X, p.Y }).ToArray();
+            fixed (int* outline_Ptr = outline)
+            fixed (char* room_Ptr = room.Room)
+            fixed (char* template_name_Ptr = room.RoomTemplate.Name)
+            {
+                action(rooms_Ptr, room_Ptr, room.Position.X, room.Position.Y, room.IsCorridor, template_name_Ptr, (int)room.Transformation, outline_Ptr, outline.Length);
+            }
         }
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_geneartor_inject_seed))]

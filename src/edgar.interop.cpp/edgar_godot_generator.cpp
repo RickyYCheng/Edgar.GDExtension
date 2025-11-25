@@ -43,13 +43,21 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
     return cons(nodes, edges, layers);
 }
 
-void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation) {
+void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation, int *outline_pts, int outline_size) {
     Dictionary room;
     room["room"] = name;
     room["position"] = Vector2(posX, posY);
     room["is_corridor"] = is_corridor;
     room["template"] = template_name;
     room["transformation"] = transformation;
+
+    outline_size /= 2;
+    TypedArray<Vector2i> outline;
+    outline.resize(outline_size);
+    for (int i = 0; i < outline_size; i++)
+        outline[i] = Vector2i(outline_pts[i * 2], outline_pts[i * 2 + 1]);
+    room["outline"] = outline;
+
     rooms->push_back(room);
 }
 
