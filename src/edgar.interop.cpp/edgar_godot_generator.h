@@ -1,6 +1,6 @@
 //© Copyright 2014-2022, Juan Linietsky, Ariel Manzur and the Godot community (CC-BY 3.0)
-#ifndef DOOR_GRID_2D_CLASS_H
-#define DOOR_GRID_2D_CLASS_H
+#ifndef EDGAR_GODOT_GENERATOR_H
+#define EDGAR_GODOT_GENERATOR_H
 
 // We don't need windows.h in this plugin but many others do and it throws up on itself all the time
 // So best to include it and make sure CI warns us when we use something Microsoft took for their own goals....
@@ -55,4 +55,4 @@ public:
     Dictionary generate_layout_with_seed_injection(int seed);
 };
 
-#endif // DOOR_GRID_2D_CLASS_H
+#endif // EDGAR_GODOT_GENERATOR_H
