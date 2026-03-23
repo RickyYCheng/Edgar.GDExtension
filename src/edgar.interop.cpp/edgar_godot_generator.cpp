@@ -22,25 +22,34 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         return nullptr;
     }
 
-    Dictionary nodes = level->get_meta("nodes");
-    TypedArray<Dictionary> edges = level->get_meta("edges");
-    TypedArray<PackedStringArray> raw_layers = level->get_meta("level");
-    auto layers_size = raw_layers.size();
-    TypedArray<Dictionary> layers;
-    for (auto i = 0; i < layers_size; i++) {
-        Dictionary result;
-        PackedStringArray layer = raw_layers[i];
-        auto layer_size = layer.size();
-        for (auto j = 0; j < layer_size; j++) {
-            String name = layer[j];
-            Ref<PackedScene> tmj = ResourceLoader::get_singleton()->load(name);
-            Dictionary lnk = tmj->get_state()->get_node_property_value(0, 0);
-            result[name] = lnk;
+    try {
+        Dictionary nodes = level->get_meta("nodes");
+        TypedArray<Dictionary> edges = level->get_meta("edges");
+        TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
+        auto layers_size = raw_layers.size();
+        TypedArray<Dictionary> layers;
+        for (auto i = 0; i < layers_size; i++) {
+            Dictionary result;
+            PackedStringArray layer = raw_layers[i];
+            auto layer_size = layer.size();
+            for (auto j = 0; j < layer_size; j++) {
+                String name = layer[j];
+                Ref<PackedScene> tmj = ResourceLoader::get_singleton()->load(name);
+                if (tmj.is_null()) {
+                    UtilityFunctions::push_error("Failed to load packed scene: " + name);
+                    continue;
+                }
+                Dictionary lnk = tmj->get_state()->get_node_property_value(0, 0);
+                result[name] = lnk;
+            }
+            layers.push_back(result);
         }
-        layers.push_back(result);
+        
+        return cons(nodes, edges, layers);
+    } catch (...) {
+        UtilityFunctions::push_error("Failed to create generator from resource");
+        return nullptr;
     }
-    
-    return cons(nodes, edges, layers);
 }
 
 void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation, int *outline_pts, int outline_size) {
@@ -62,10 +71,19 @@ void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool i
 }
 
 void EdgarGodotGenerator::inject_seed(int seed) {
+    if (csharp_obj_handle == nullptr) {
+        UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
+        return;
+    }
     csharp_obj_edgar_geneartor_inject_seed(csharp_obj_handle, seed);
 }
 
 Dictionary EdgarGodotGenerator::generate_layout() {
+    if (csharp_obj_handle == nullptr) {
+        UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
+        return Dictionary();
+    }
+    
     Dictionary result;
     Array rooms;
     csharp_obj_edgar_generator_generate(csharp_obj_handle, &rooms, &fill_result_dict);
