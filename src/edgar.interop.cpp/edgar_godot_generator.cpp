@@ -12,8 +12,17 @@ using namespace godot;
 
 Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers) {
     EdgarGodotGenerator *self = memnew(EdgarGodotGenerator);
-    self->csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&nodes, &edges, &layers);
+    self->_nodes = nodes;
+    self->_edges = edges;
+    self->_layers = layers;
     return self;
+}
+
+void EdgarGodotGenerator::ensure_generator() {
+    if (csharp_obj_handle != nullptr) {
+        return;
+    }
+    csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers);
 }
 
 Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level) {
@@ -71,6 +80,7 @@ void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool i
 }
 
 void EdgarGodotGenerator::inject_seed(int seed) {
+    ensure_generator();
     if (csharp_obj_handle == nullptr) {
         UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
         return;
@@ -79,6 +89,7 @@ void EdgarGodotGenerator::inject_seed(int seed) {
 }
 
 Dictionary EdgarGodotGenerator::generate_layout() {
+    ensure_generator();
     if (csharp_obj_handle == nullptr) {
         UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
         return Dictionary();

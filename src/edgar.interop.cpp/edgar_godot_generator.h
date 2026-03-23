@@ -26,7 +26,12 @@ class EdgarGodotGenerator : public RefCounted {
 
 protected:
     void *csharp_obj_handle;
+    Dictionary _nodes;
+    TypedArray<Dictionary> _edges;
+    TypedArray<Dictionary> _layers;
+
     static void _bind_methods();
+    void ensure_generator();
 
 public:
     EdgarGodotGenerator() : RefCounted() {
