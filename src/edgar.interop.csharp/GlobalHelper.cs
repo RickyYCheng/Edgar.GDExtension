@@ -64,16 +64,23 @@ public static unsafe partial class GlobalHelper
         IntPtr iterTransformations
     )
     {
-        GDPrint = Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint);
-        ArrayGetSize = Marshal.GetDelegateForFunctionPointer<ArrayGetSizeDelegate>(arrayGetSize);
-        IterLayers = Marshal.GetDelegateForFunctionPointer<IterLayersDelegate>(iterLayers);
-        IterLayer = Marshal.GetDelegateForFunctionPointer<IterLayerDelegate>(iterLayer);
-        IterLnkBoundary = Marshal.GetDelegateForFunctionPointer<IterLnkBoundaryDelegate>(iterLnkBoundary);
-        IterDoors = Marshal.GetDelegateForFunctionPointer<IterDoorsDelegate>(iterDoors);
-        IterDoor = Marshal.GetDelegateForFunctionPointer<IterDoorDelegate>(iterDoor);
-        IterNodes = Marshal.GetDelegateForFunctionPointer<IterNodesDelegate>(iterNodes);
-        IterEdges = Marshal.GetDelegateForFunctionPointer<IterEdgesDelegate>(iterEdges);
-        IterTransformations = Marshal.GetDelegateForFunctionPointer<IterTransformationsDelegate>(iterTransformations);
+        try
+        {
+            GDPrint = Marshal.GetDelegateForFunctionPointer<GDPrintDelegate>(gdprint);
+            ArrayGetSize = Marshal.GetDelegateForFunctionPointer<ArrayGetSizeDelegate>(arrayGetSize);
+            IterLayers = Marshal.GetDelegateForFunctionPointer<IterLayersDelegate>(iterLayers);
+            IterLayer = Marshal.GetDelegateForFunctionPointer<IterLayerDelegate>(iterLayer);
+            IterLnkBoundary = Marshal.GetDelegateForFunctionPointer<IterLnkBoundaryDelegate>(iterLnkBoundary);
+            IterDoors = Marshal.GetDelegateForFunctionPointer<IterDoorsDelegate>(iterDoors);
+            IterDoor = Marshal.GetDelegateForFunctionPointer<IterDoorDelegate>(iterDoor);
+            IterNodes = Marshal.GetDelegateForFunctionPointer<IterNodesDelegate>(iterNodes);
+            IterEdges = Marshal.GetDelegateForFunctionPointer<IterEdgesDelegate>(iterEdges);
+            IterTransformations = Marshal.GetDelegateForFunctionPointer<IterTransformationsDelegate>(iterTransformations);
+        }
+        catch (Exception ex)
+        {
+            try { GDPrint?.Invoke($"[Edgar.GDExtension] csharp_init_global failed: {ex.Message}"); } catch { }
+        }
     }
 }
 
@@ -82,10 +89,28 @@ public static partial class GlobalHelper
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_free))]
     public static void csharp_obj_free(IntPtr obj_handle_Ptr)
     {
-        var handle = GCHandle.FromIntPtr(obj_handle_Ptr);
-        handle.Free();
+        try
+        {
+            if (obj_handle_Ptr == IntPtr.Zero) return;
+            var handle = GCHandle.FromIntPtr(obj_handle_Ptr);
+            handle.Free();
+        }
+        catch (Exception ex)
+        {
+            try { GDPrint?.Invoke($"[Edgar.GDExtension] csharp_obj_free failed: {ex.Message}"); } catch { }
+        }
     }
     
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_gc_collect))]
-    public static void csharp_gc_collect() => GC.Collect();
+    public static void csharp_gc_collect()
+    {
+        try
+        {
+            GC.Collect();
+        }
+        catch (Exception ex)
+        {
+            try { GDPrint?.Invoke($"[Edgar.GDExtension] csharp_gc_collect failed: {ex.Message}"); } catch { }
+        }
+    }
 }

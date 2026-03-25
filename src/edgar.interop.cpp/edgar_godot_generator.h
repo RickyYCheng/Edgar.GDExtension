@@ -18,7 +18,7 @@ using namespace godot;
 extern "C" {
     void *csharp_obj_alloc_edgar_godot_generator(Dictionary *nodes, TypedArray<Dictionary> *edges, TypedArray<Dictionary> *layers);
     void csharp_obj_edgar_generator_generate(void *handle_Ptr, void *result, void *fill_room);
-    void csharp_obj_edgar_geneartor_inject_seed(void *handle_Ptr, int seed);
+    void csharp_obj_edgar_generator_inject_seed(void *handle_Ptr, int seed);
 }
 
 class EdgarGodotGenerator : public RefCounted {

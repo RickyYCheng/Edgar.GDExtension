@@ -46,37 +46,89 @@ public unsafe static class EdgarGodotGeneratorHelper
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_edgar_godot_generator))]
     public static IntPtr csharp_obj_alloc_edgar_godot_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr) 
     {
-        var obj = get_generator(nodes_Ptr, edges_Ptr, layers_Ptr);
-        var handle = GCHandle.Alloc(obj);
-        var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
-        return obj_handle_Ptr;
+        try
+        {
+            if (nodes_Ptr == IntPtr.Zero || edges_Ptr == IntPtr.Zero || layers_Ptr == IntPtr.Zero)
+            {
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_alloc_edgar_godot_generator: null pointer argument");
+                return IntPtr.Zero;
+            }
+            var obj = get_generator(nodes_Ptr, edges_Ptr, layers_Ptr);
+            if (obj == null)
+            {
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_alloc_edgar_godot_generator: failed to create generator");
+                return IntPtr.Zero;
+            }
+            var handle = GCHandle.Alloc(obj);
+            var obj_handle_Ptr = GCHandle.ToIntPtr(handle);
+            return obj_handle_Ptr;
+        }
+        catch (Exception ex)
+        {
+            try { GlobalHelper.GDPrint?.Invoke($"[Edgar.GDExtension] csharp_obj_alloc_edgar_godot_generator failed: {ex.Message}"); } catch { }
+            return IntPtr.Zero;
+        }
     }
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_generator_generate))]
     public static void csharp_obj_edgar_generator_generate(IntPtr handle_Ptr, IntPtr rooms_Ptr, IntPtr fill_room_Ptr)
     {
-        var action = Marshal.GetDelegateForFunctionPointer<FillRoomDelegate>(fill_room_Ptr);
-
-        var handle = GCHandle.FromIntPtr(handle_Ptr);
-        var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
-        var layout = generator.GenerateLayout();
-        
-        foreach (var room in layout.Rooms)
+        try
         {
-            var outline = room.Outline.GetPoints().SelectMany(p => new int[] { p.X, p.Y }).ToArray();
-            fixed (int* outline_Ptr = outline)
-            fixed (char* room_Ptr = room.Room)
-            fixed (char* template_name_Ptr = room.RoomTemplate.Name)
+            if (handle_Ptr == IntPtr.Zero || rooms_Ptr == IntPtr.Zero || fill_room_Ptr == IntPtr.Zero)
             {
-                action(rooms_Ptr, room_Ptr, room.Position.X, room.Position.Y, room.IsCorridor, template_name_Ptr, (int)room.Transformation, outline_Ptr, outline.Length);
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_edgar_generator_generate: null pointer argument");
+                return;
+            }
+            var action = Marshal.GetDelegateForFunctionPointer<FillRoomDelegate>(fill_room_Ptr);
+
+            var handle = GCHandle.FromIntPtr(handle_Ptr);
+            var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
+            if (generator == null)
+            {
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_edgar_generator_generate: generator is null");
+                return;
+            }
+            var layout = generator.GenerateLayout();
+            
+            foreach (var room in layout.Rooms)
+            {
+                var outline = room.Outline.GetPoints().SelectMany(p => new int[] { p.X, p.Y }).ToArray();
+                fixed (int* outline_Ptr = outline)
+                fixed (char* room_Ptr = room.Room)
+                fixed (char* template_name_Ptr = room.RoomTemplate.Name)
+                {
+                    action(rooms_Ptr, room_Ptr, room.Position.X, room.Position.Y, room.IsCorridor, template_name_Ptr, (int)room.Transformation, outline_Ptr, outline.Length);
+                }
             }
         }
+        catch (Exception ex)
+        {
+            try { GlobalHelper.GDPrint?.Invoke($"[Edgar.GDExtension] csharp_obj_edgar_generator_generate failed: {ex.Message}"); } catch { }
+        }
     }
-    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_geneartor_inject_seed))]
-    public static void csharp_obj_edgar_geneartor_inject_seed(IntPtr handle_Ptr, int seed)
+    [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_edgar_generator_inject_seed))]
+    public static void csharp_obj_edgar_generator_inject_seed(IntPtr handle_Ptr, int seed)
     {
-        var handle = GCHandle.FromIntPtr(handle_Ptr);
-        var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
-        generator.InjectRandomGenerator(new(seed));
+        try
+        {
+            if (handle_Ptr == IntPtr.Zero)
+            {
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_edgar_generator_inject_seed: null pointer argument");
+                return;
+            }
+            var handle = GCHandle.FromIntPtr(handle_Ptr);
+            var generator = (GraphBasedGeneratorGrid2D<string>)handle.Target;
+            if (generator == null)
+            {
+                GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_edgar_generator_inject_seed: generator is null");
+                return;
+            }
+            generator.InjectRandomGenerator(new(seed));
+        }
+        catch (Exception ex)
+        {
+            try { GlobalHelper.GDPrint?.Invoke($"[Edgar.GDExtension] csharp_obj_edgar_generator_inject_seed failed: {ex.Message}"); } catch { }
+        }
     }
     private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
     {

@@ -27,7 +27,7 @@ void EdgarGodotGenerator::ensure_generator() {
 
 Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level) {
     if (!resource_valid(level)) {
-        UtilityFunctions::push_error("The level resource is not a valid edgar level resource!");
+        UtilityFunctions::push_error("[Edgar.GDExtension] The level resource is not a valid edgar level resource!");
         return nullptr;
     }
 
@@ -45,7 +45,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
                 String name = layer[j];
                 Ref<PackedScene> tmj = ResourceLoader::get_singleton()->load(name);
                 if (tmj.is_null()) {
-                    UtilityFunctions::push_error("Failed to load packed scene: " + name);
+                    UtilityFunctions::push_error("[Edgar.GDExtension] Failed to load packed scene: " + name);
                     continue;
                 }
                 Dictionary lnk = tmj->get_state()->get_node_property_value(0, 0);
@@ -56,7 +56,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         
         return cons(nodes, edges, layers);
     } catch (...) {
-        UtilityFunctions::push_error("Failed to create generator from resource");
+        UtilityFunctions::push_error("[Edgar.GDExtension] Failed to create generator from resource");
         return nullptr;
     }
 }
@@ -82,16 +82,16 @@ void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool i
 void EdgarGodotGenerator::inject_seed(int seed) {
     ensure_generator();
     if (csharp_obj_handle == nullptr) {
-        UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
+        UtilityFunctions::push_error("[Edgar.GDExtension] Generator is not initialized. Please provide valid nodes, edges, and layers.");
         return;
     }
-    csharp_obj_edgar_geneartor_inject_seed(csharp_obj_handle, seed);
+    csharp_obj_edgar_generator_inject_seed(csharp_obj_handle, seed);
 }
 
 Dictionary EdgarGodotGenerator::generate_layout() {
     ensure_generator();
     if (csharp_obj_handle == nullptr) {
-        UtilityFunctions::push_error("Generator is not initialized. Please provide valid nodes, edges, and layers.");
+        UtilityFunctions::push_error("[Edgar.GDExtension] Generator is not initialized. Please provide valid nodes, edges, and layers.");
         return Dictionary();
     }
     
