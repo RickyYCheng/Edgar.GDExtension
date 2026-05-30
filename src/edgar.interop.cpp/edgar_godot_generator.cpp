@@ -53,7 +53,14 @@ Dictionary EdgarGodotGenerator::get_lnk(const String &template_name, Ref<Resourc
         UtilityFunctions::push_error("[Edgar.GDExtension] Failed to load template: " + template_name);
         return Dictionary();
     }
-    return _template->get_state()->get_node_property_value(0, 0);
+    Ref<SceneState> scene_state = _template->get_state();
+    for (int i = 0; i < scene_state->get_node_property_count(0); i++) {
+        String prop_name = scene_state->get_node_property_name(0, i);
+        if (prop_name == "metadata/lnk") {
+            return scene_state->get_node_property_value(0, i);
+        }
+    }
+    return Dictionary();
 }
 
 Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level) {
