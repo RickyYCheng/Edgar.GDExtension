@@ -33,6 +33,10 @@ protected:
     static void _bind_methods();
     void ensure_generator();
 
+private:
+    static Ref<Resource> get_proxy();
+    static Dictionary get_lnk(const String &template_name, Ref<Resource> proxy = Ref<Resource>());
+
 public:
     EdgarGodotGenerator() : RefCounted() {
         this->csharp_obj_handle = nullptr;

@@ -1,6 +1,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 
+#include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/classes/resource_loader.hpp>
 #include <godot_cpp/classes/packed_scene.hpp>
 #include <godot_cpp/classes/scene_state.hpp>
@@ -25,6 +26,33 @@ void EdgarGodotGenerator::ensure_generator() {
     csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers);
 }
 
+Ref<Resource> EdgarGodotGenerator::get_proxy() {
+    static Ref<Resource> _proxy;
+    static String _cached_proxy_path;
+    String path = ProjectSettings::get_singleton()->get_setting("Edgar/kernel/edgar_kernel_proxy", "res://addons/edgar.godot/proxy/yati/edgar_yati_proxy.gd");
+    if (_cached_proxy_path != path) {
+        _cached_proxy_path = path;
+        _proxy = ResourceLoader::get_singleton()->exists(path) ? ResourceLoader::get_singleton()->load(path) : Ref<Resource>();
+    }
+    return _proxy;
+}
+
+Dictionary EdgarGodotGenerator::get_lnk(const String &template_name, Ref<Resource> proxy) {
+    if (proxy.is_null()) {
+        proxy = get_proxy();
+    }
+    if (proxy.is_valid()) {
+        return proxy->call("get_lnk", template_name);
+    }
+
+    Ref<PackedScene> _template = ResourceLoader::get_singleton()->load(template_name);
+    if (_template.is_null()) {
+        UtilityFunctions::push_error("[Edgar.GDExtension] Failed to load template: " + template_name);
+        return Dictionary();
+    }
+    return _template->get_state()->get_node_property_value(0, 0);
+}
+
 Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level) {
     if (!resource_valid(level)) {
         UtilityFunctions::push_error("[Edgar.GDExtension] The level resource is not a valid edgar level resource!");
@@ -35,8 +63,9 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         Dictionary nodes = level->get_meta("nodes");
         TypedArray<Dictionary> edges = level->get_meta("edges");
         TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
-        auto layers_size = raw_layers.size();
         Dictionary cache;
+        Ref<Resource> proxy = get_proxy();
+        auto layers_size = raw_layers.size();
         TypedArray<Dictionary> layers;
         for (auto i = 0; i < layers_size; i++) {
             Dictionary result;
@@ -50,12 +79,11 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
                     continue;
                 }
 
-                Ref<PackedScene> _template = ResourceLoader::get_singleton()->load(name);
-                if (_template.is_null()) {
-                    UtilityFunctions::push_error("[Edgar.GDExtension] Failed to load packed scene: " + name);
+                Dictionary lnk = get_lnk(name, proxy);
+                if (lnk.is_empty()) {
                     continue;
                 }
-                Dictionary lnk = _template->get_state()->get_node_property_value(0, 0);
+
                 cache[name] = lnk;
                 result[name] = lnk;
             }
