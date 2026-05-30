@@ -33,7 +33,7 @@ public unsafe static class EdgarGodotGeneratorHelper
     public delegate void IterEdges_ProceduresDelegate(IntPtr from_node, IntPtr to_node);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void FillRoomDelegate(IntPtr result, char *room, int posX, int posY, bool is_corridor, char* template_name, int transformation, int *outline_pts, int outline_size);
+    public delegate void FillRoomDelegate(IntPtr result, byte *room, int posX, int posY, bool is_corridor, byte* template_name, int transformation, int *outline_pts, int outline_size, int doors_count, IntPtr doors_from_rooms, IntPtr doors_to_rooms, int *doors_line_data);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IterTransformations_ProceduresDelegate(int transformation);
@@ -93,11 +93,69 @@ public unsafe static class EdgarGodotGeneratorHelper
             foreach (var room in layout.Rooms)
             {
                 var outline = room.Outline.GetPoints().SelectMany(p => new int[] { p.X, p.Y }).ToArray();
+                var doors = room.Doors;
+                var doorsCount = doors.Count;
+
+                var roomBytes = System.Text.Encoding.UTF8.GetBytes((room.Room ?? "") + '\0');
+                var templateBytes = System.Text.Encoding.UTF8.GetBytes((room.RoomTemplate?.Name ?? "") + '\0');
+
+                fixed (byte* roomNamePtr = roomBytes)
+                fixed (byte* templateNamePtr = templateBytes)
                 fixed (int* outline_Ptr = outline)
-                fixed (char* room_Ptr = room.Room)
-                fixed (char* template_name_Ptr = room.RoomTemplate.Name)
                 {
-                    action(rooms_Ptr, room_Ptr, room.Position.X, room.Position.Y, room.IsCorridor, template_name_Ptr, (int)room.Transformation, outline_Ptr, outline.Length);
+                    if (doorsCount == 0)
+                    {
+                        action(rooms_Ptr, roomNamePtr, room.Position.X, room.Position.Y, room.IsCorridor, templateNamePtr, (int)room.Transformation, outline_Ptr, outline.Length, 0, IntPtr.Zero, IntPtr.Zero, null);
+                    }
+                    else
+                    {
+                        var fromRoomHandles = new GCHandle[doorsCount];
+                        var toRoomHandles = new GCHandle[doorsCount];
+                        var fromRoomPtrs = new IntPtr[doorsCount];
+                        var toRoomPtrs = new IntPtr[doorsCount];
+                        var doorsLineData = new int[doorsCount * 4];
+
+                        try
+                        {
+                            for (int i = 0; i < doorsCount; i++)
+                            {
+                                var door = doors[i];
+
+                                var fromBytes = System.Text.Encoding.UTF8.GetBytes(door.FromRoom + '\0');
+                                var toBytes = System.Text.Encoding.UTF8.GetBytes(door.ToRoom + '\0');
+
+                                fromRoomHandles[i] = GCHandle.Alloc(fromBytes, GCHandleType.Pinned);
+                                toRoomHandles[i] = GCHandle.Alloc(toBytes, GCHandleType.Pinned);
+
+                                fromRoomPtrs[i] = fromRoomHandles[i].AddrOfPinnedObject();
+                                toRoomPtrs[i] = toRoomHandles[i].AddrOfPinnedObject();
+
+                                doorsLineData[i * 4 + 0] = door.DoorLine.From.X;
+                                doorsLineData[i * 4 + 1] = door.DoorLine.From.Y;
+                                doorsLineData[i * 4 + 2] = door.DoorLine.To.X;
+                                doorsLineData[i * 4 + 3] = door.DoorLine.To.Y;
+                            }
+
+                            var fromRoomArrayHandle = GCHandle.Alloc(fromRoomPtrs, GCHandleType.Pinned);
+                            var toRoomArrayHandle = GCHandle.Alloc(toRoomPtrs, GCHandleType.Pinned);
+
+                            fixed (int* doorsLinePtr = doorsLineData)
+                            {
+                                action(rooms_Ptr, roomNamePtr, room.Position.X, room.Position.Y, room.IsCorridor, templateNamePtr, (int)room.Transformation, outline_Ptr, outline.Length, doorsCount, fromRoomArrayHandle.AddrOfPinnedObject(), toRoomArrayHandle.AddrOfPinnedObject(), doorsLinePtr);
+                            }
+
+                            fromRoomArrayHandle.Free();
+                            toRoomArrayHandle.Free();
+                        }
+                        finally
+                        {
+                            for (int i = 0; i < doorsCount; i++)
+                            {
+                                if (fromRoomHandles[i].IsAllocated) fromRoomHandles[i].Free();
+                                if (toRoomHandles[i].IsAllocated) toRoomHandles[i].Free();
+                            }
+                        }
+                    }
                 }
             }
         }

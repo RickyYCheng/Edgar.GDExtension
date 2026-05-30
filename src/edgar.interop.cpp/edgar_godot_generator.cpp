@@ -61,7 +61,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
     }
 }
 
-void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation, int *outline_pts, int outline_size) {
+void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool is_corridor, const char *template_name, int transformation, int *outline_pts, int outline_size, int doors_count, const char **doors_from_rooms, const char **doors_to_rooms, int *doors_line_data) {
     Dictionary room;
     room["room"] = name;
     room["position"] = Vector2(posX, posY);
@@ -75,6 +75,21 @@ void fill_result_dict(Array *rooms, const char *name, int posX, int posY, bool i
     for (int i = 0; i < outline_size; i++)
         outline[i] = Vector2i(outline_pts[i * 2], outline_pts[i * 2 + 1]);
     room["outline"] = outline;
+
+    Array doors;
+    for (int i = 0; i < doors_count; i++) {
+        Dictionary door;
+        door["from_room"] = doors_from_rooms[i];
+        door["to_room"] = doors_to_rooms[i];
+
+        Dictionary door_line;
+        door_line["from"] = Vector2(doors_line_data[i * 4], doors_line_data[i * 4 + 1]);
+        door_line["to"] = Vector2(doors_line_data[i * 4 + 2], doors_line_data[i * 4 + 3]);
+        door["door_line"] = door_line;
+
+        doors.push_back(door);
+    }
+    room["doors"] = doors;
 
     rooms->push_back(room);
 }
