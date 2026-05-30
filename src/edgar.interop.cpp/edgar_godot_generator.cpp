@@ -27,6 +27,9 @@ void EdgarGodotGenerator::ensure_generator() {
 }
 
 Ref<Resource> EdgarGodotGenerator::get_proxy() {
+    // WARNING: function-local statics are used because class-level statics
+    // of godot-cpp types appear to be initialized before the engine is ready,
+    // causing the GDExtension library to fail loading (speculative).
     static Ref<Resource> _proxy;
     static String _cached_proxy_path;
     String path = ProjectSettings::get_singleton()->get_setting("Edgar/kernel/edgar_kernel_proxy", "res://addons/edgar.godot/proxy/yati/edgar_yati_proxy.gd");
