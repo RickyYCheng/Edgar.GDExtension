@@ -36,6 +36,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         TypedArray<Dictionary> edges = level->get_meta("edges");
         TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
         auto layers_size = raw_layers.size();
+        Dictionary cache;
         TypedArray<Dictionary> layers;
         for (auto i = 0; i < layers_size; i++) {
             Dictionary result;
@@ -43,12 +44,19 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
             auto layer_size = layer.size();
             for (auto j = 0; j < layer_size; j++) {
                 String name = layer[j];
-                Ref<PackedScene> tmj = ResourceLoader::get_singleton()->load(name);
-                if (tmj.is_null()) {
+
+                if (cache.has(name)) {
+                    result[name] = cache[name];
+                    continue;
+                }
+
+                Ref<PackedScene> _template = ResourceLoader::get_singleton()->load(name);
+                if (_template.is_null()) {
                     UtilityFunctions::push_error("[Edgar.GDExtension] Failed to load packed scene: " + name);
                     continue;
                 }
-                Dictionary lnk = tmj->get_state()->get_node_property_value(0, 0);
+                Dictionary lnk = _template->get_state()->get_node_property_value(0, 0);
+                cache[name] = lnk;
                 result[name] = lnk;
             }
             layers.push_back(result);
