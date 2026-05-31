@@ -7,6 +7,7 @@
 #include <godot_cpp/classes/scene_state.hpp>
 
 #include "_csharp_global_helper.h"
+#include "edgar_godot.h"
 #include "edgar_godot_generator.h"
 
 using namespace godot;
@@ -26,23 +27,9 @@ void EdgarGodotGenerator::ensure_generator() {
     csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers);
 }
 
-Ref<Resource> EdgarGodotGenerator::get_proxy() {
-    // WARNING: function-local statics are used because class-level statics
-    // of godot-cpp types appear to be initialized before the engine is ready,
-    // causing the GDExtension library to fail loading (speculative).
-    static Ref<Resource> _proxy;
-    static String _cached_proxy_path;
-    String path = ProjectSettings::get_singleton()->get_setting("Edgar/kernel/edgar_kernel_proxy", "res://addons/edgar.godot/proxy/yati/edgar_yati_proxy.gd");
-    if (_cached_proxy_path != path) {
-        _cached_proxy_path = path;
-        _proxy = ResourceLoader::get_singleton()->exists(path) ? ResourceLoader::get_singleton()->load(path) : Ref<Resource>();
-    }
-    return _proxy;
-}
-
 Dictionary EdgarGodotGenerator::get_lnk(const String &template_name, Ref<Resource> proxy) {
     if (proxy.is_null()) {
-        proxy = get_proxy();
+        proxy = EdgarGodot::get_proxy();
     }
     if (proxy.is_valid()) {
         return proxy->call("get_lnk", template_name);
@@ -74,7 +61,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         TypedArray<Dictionary> edges = level->get_meta("edges");
         TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
         Dictionary cache;
-        Ref<Resource> proxy = get_proxy();
+        Ref<Resource> proxy = EdgarGodot::get_proxy();
         auto layers_size = raw_layers.size();
         TypedArray<Dictionary> layers;
         for (auto i = 0; i < layers_size; i++) {

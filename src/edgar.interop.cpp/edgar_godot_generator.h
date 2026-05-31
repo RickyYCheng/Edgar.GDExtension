@@ -34,7 +34,6 @@ protected:
     void ensure_generator();
 
 private:
-    static Ref<Resource> get_proxy();
     static Dictionary get_lnk(const String &template_name, Ref<Resource> proxy = Ref<Resource>());
 
 public:

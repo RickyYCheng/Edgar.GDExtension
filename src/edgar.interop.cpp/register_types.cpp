@@ -4,6 +4,7 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include "edgar_godot.h"
 #include "edgar_godot_generator.h"
 
 using namespace godot;
@@ -129,6 +130,7 @@ void initialize_types(ModuleInitializationLevel p_level) {
         &iter_edges,
         &iter_transformations
     );
+    ClassDB::register_class<EdgarGodot>();
     ClassDB::register_class<EdgarGodotGenerator>();
 }
 

@@ -63,3 +63,5 @@ func _ready() -> void:
 	print(seeded_layout_1, "\n")
 	print(seeded_layout_2, "\n")
 	prints("[layout comparison]", var_to_str(seeded_layout_1) == var_to_str(seeded_layout_2), "\n")
+	
+	prints("[proxy]", EdgarGodot.get_proxy())
