@@ -12,11 +12,12 @@
 
 using namespace godot;
 
-Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers) {
+Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers, int minimum_room_distance) {
     EdgarGodotGenerator *self = memnew(EdgarGodotGenerator);
     self->_nodes = nodes;
     self->_edges = edges;
     self->_layers = layers;
+    self->_minimum_room_distance = minimum_room_distance;
     return self;
 }
 
@@ -24,7 +25,7 @@ void EdgarGodotGenerator::ensure_generator() {
     if (csharp_obj_handle != nullptr) {
         return;
     }
-    csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers);
+    csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers, _minimum_room_distance);
 }
 
 Dictionary EdgarGodotGenerator::get_lnk(const String &template_name, Ref<Resource> proxy) {
@@ -157,7 +158,7 @@ Dictionary EdgarGodotGenerator::generate_layout_with_seed_injection(int seed) {
 
 void EdgarGodotGenerator::_bind_methods() {
     // p_name must be same to the func name
-    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "nodes", "edges", "layers"), &EdgarGodotGenerator::cons);
+    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "nodes", "edges", "layers", "minimum_room_distance"), &EdgarGodotGenerator::cons, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("inject_seed", "seed"), &EdgarGodotGenerator::inject_seed);
     ClassDB::bind_method(D_METHOD("generate_layout"), &EdgarGodotGenerator::generate_layout);
     ClassDB::bind_method(D_METHOD("generate_layout_with_seed_injection", "seed"), &EdgarGodotGenerator::generate_layout_with_seed_injection);

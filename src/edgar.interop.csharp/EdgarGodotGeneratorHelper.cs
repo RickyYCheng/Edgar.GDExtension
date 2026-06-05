@@ -44,7 +44,7 @@ public unsafe static class EdgarGodotGeneratorHelper
     // If such a need arises, modifications can be done through C# functions.
     // The key focus is on referencing rather than direct access (address)
     [UnmanagedCallersOnly(EntryPoint = nameof(csharp_obj_alloc_edgar_godot_generator))]
-    public static IntPtr csharp_obj_alloc_edgar_godot_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr) 
+    public static IntPtr csharp_obj_alloc_edgar_godot_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr, int minimum_room_distance) 
     {
         try
         {
@@ -53,7 +53,7 @@ public unsafe static class EdgarGodotGeneratorHelper
                 GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_alloc_edgar_godot_generator: null pointer argument");
                 return IntPtr.Zero;
             }
-            var obj = get_generator(nodes_Ptr, edges_Ptr, layers_Ptr);
+            var obj = get_generator(nodes_Ptr, edges_Ptr, layers_Ptr, minimum_room_distance);
             if (obj == null)
             {
                 GlobalHelper.GDPrint?.Invoke("[Edgar.GDExtension] csharp_obj_alloc_edgar_godot_generator: failed to create generator");
@@ -188,9 +188,10 @@ public unsafe static class EdgarGodotGeneratorHelper
             try { GlobalHelper.GDPrint?.Invoke($"[Edgar.GDExtension] csharp_obj_edgar_generator_inject_seed failed: {ex.Message}"); } catch { }
         }
     }
-    private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr)
+    private static GraphBasedGeneratorGrid2D<string> get_generator(IntPtr nodes_Ptr, IntPtr edges_Ptr, IntPtr layers_Ptr, int minimum_room_distance)
     {
         var level_description = new LevelDescriptionGrid2D<string>();
+        level_description.MinimumRoomDistance = minimum_room_distance;
 
         var layers_count = (int)GlobalHelper.ArrayGetSize(layers_Ptr);
         var layer_templates = new List<List<RoomTemplateGrid2D>>();
