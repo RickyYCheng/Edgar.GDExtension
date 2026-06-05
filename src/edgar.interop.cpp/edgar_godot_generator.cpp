@@ -12,12 +12,14 @@
 
 using namespace godot;
 
-Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers, int minimum_room_distance) {
+Ref<EdgarGodotGenerator> EdgarGodotGenerator::cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers, int minimum_room_distance, int room_template_repeat_mode_default, int room_template_repeat_mode_override) {
     EdgarGodotGenerator *self = memnew(EdgarGodotGenerator);
     self->_nodes = nodes;
     self->_edges = edges;
     self->_layers = layers;
     self->_minimum_room_distance = minimum_room_distance;
+    self->_room_template_repeat_mode_default = room_template_repeat_mode_default;
+    self->_room_template_repeat_mode_override = room_template_repeat_mode_override;
     return self;
 }
 
@@ -25,7 +27,7 @@ void EdgarGodotGenerator::ensure_generator() {
     if (csharp_obj_handle != nullptr) {
         return;
     }
-    csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers, _minimum_room_distance);
+    csharp_obj_handle = csharp_obj_alloc_edgar_godot_generator(&_nodes, &_edges, &_layers, _minimum_room_distance, _room_template_repeat_mode_default, _room_template_repeat_mode_override);
 }
 
 Dictionary EdgarGodotGenerator::get_lnk(const String &template_name, Ref<Resource> proxy) {
@@ -61,6 +63,8 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
         Dictionary nodes = level->get_meta("nodes");
         TypedArray<Dictionary> edges = level->get_meta("edges");
         int minimum_room_distance = level->get_meta("minimum_room_distance", 0);
+        int room_template_repeat_mode_default = level->get_meta("room_template_repeat_mode_default", 2);
+        int room_template_repeat_mode_override = level->get_meta("room_template_repeat_mode_override", -1);
         TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
         Dictionary cache;
         Ref<Resource> proxy = EdgarGodot::get_proxy();
@@ -89,7 +93,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
             layers.push_back(result);
         }
         
-        return cons(nodes, edges, layers, minimum_room_distance);
+        return cons(nodes, edges, layers, minimum_room_distance, room_template_repeat_mode_default, room_template_repeat_mode_override);
     } catch (...) {
         UtilityFunctions::push_error("[Edgar.GDExtension] Failed to create generator from resource");
         return nullptr;
@@ -159,7 +163,7 @@ Dictionary EdgarGodotGenerator::generate_layout_with_seed_injection(int seed) {
 
 void EdgarGodotGenerator::_bind_methods() {
     // p_name must be same to the func name
-    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "nodes", "edges", "layers", "minimum_room_distance"), &EdgarGodotGenerator::cons, DEFVAL(0));
+    ClassDB::bind_static_method(get_class_static(), D_METHOD("cons", "nodes", "edges", "layers", "minimum_room_distance", "room_template_repeat_mode_default", "room_template_repeat_mode_override"), &EdgarGodotGenerator::cons, DEFVAL(0), DEFVAL(2), DEFVAL(-1));
     ClassDB::bind_method(D_METHOD("inject_seed", "seed"), &EdgarGodotGenerator::inject_seed);
     ClassDB::bind_method(D_METHOD("generate_layout"), &EdgarGodotGenerator::generate_layout);
     ClassDB::bind_method(D_METHOD("generate_layout_with_seed_injection", "seed"), &EdgarGodotGenerator::generate_layout_with_seed_injection);

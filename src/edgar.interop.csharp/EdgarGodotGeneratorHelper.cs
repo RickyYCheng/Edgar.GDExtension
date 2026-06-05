@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 
 using Edgar.Geometry;
+using Edgar.GraphBasedGenerator.Common;
 using Edgar.GraphBasedGenerator.Grid2D;
 
 public unsafe static class EdgarGodotGeneratorHelper
@@ -27,7 +28,7 @@ public unsafe static class EdgarGodotGeneratorHelper
     public delegate void IterLayer_ProceduresDelegate(IntPtr name, IntPtr lnk);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void IterNodes_ProceduresDelegate(IntPtr node, int layer, bool is_corridor);
+    public delegate void IterNodes_ProceduresDelegate(IntPtr node, int layer, bool is_corridor, int repeat_mode);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate void IterEdges_ProceduresDelegate(IntPtr from_node, IntPtr to_node);
@@ -194,11 +195,11 @@ public unsafe static class EdgarGodotGeneratorHelper
         level_description.MinimumRoomDistance = minimum_room_distance;
 
         var layers_count = (int)GlobalHelper.ArrayGetSize(layers_Ptr);
-        var layer_templates = new List<List<RoomTemplateGrid2D>>();
+        var layer_template_builders = new List<List<Func<RoomTemplateRepeatMode?, RoomTemplateGrid2D>>>();
 
         void IterLayers(IntPtr layer)
         {
-            var templates = new List<RoomTemplateGrid2D>(layers_count);
+            var builders = new List<Func<RoomTemplateRepeatMode?, RoomTemplateGrid2D>>(layers_count);
             void IterLayer(IntPtr name, IntPtr lnk)
             {
                 List<Vector2Int> pts = [];
@@ -218,17 +219,20 @@ public unsafe static class EdgarGodotGeneratorHelper
                 }));
 
                 var manual_door = new ManualDoorModeGrid2D(doors_list);
-                var room_template = new RoomTemplateGrid2D(boundary, manual_door, Marshal.PtrToStringUTF8(name), allowedTransformations: transformations);
-                templates.Add(room_template);
+                builders.Add(repeatMode => new RoomTemplateGrid2D(boundary, manual_door, Marshal.PtrToStringUTF8(name), allowedTransformations: transformations, repeatMode: repeatMode));
             }
             GlobalHelper.IterLayer(layer, Marshal.GetFunctionPointerForDelegate<IterLayer_ProceduresDelegate>(IterLayer));
-            layer_templates.Add(templates);
+            layer_template_builders.Add(builders);
         }
 
         GlobalHelper.IterLayers(layers_Ptr, Marshal.GetFunctionPointerForDelegate<IterLayers_ProceduresDelegate>(IterLayers));
 
-        GlobalHelper.IterNodes(nodes_Ptr, Marshal.GetFunctionPointerForDelegate<IterNodes_ProceduresDelegate>((node, layer, is_corridor)
-            => level_description.AddRoom(Marshal.PtrToStringUTF8(node), new RoomDescriptionGrid2D(is_corridor, layer_templates[layer]))));
+        GlobalHelper.IterNodes(nodes_Ptr, Marshal.GetFunctionPointerForDelegate<IterNodes_ProceduresDelegate>((node, layer, is_corridor, repeat_mode)
+            => {
+                var repeat_mode_enum = (repeat_mode >= 0) ? (RoomTemplateRepeatMode?)repeat_mode : null;
+                var room_templates = layer_template_builders[layer].Select(b => b(repeat_mode_enum)).ToList();
+                level_description.AddRoom(Marshal.PtrToStringUTF8(node), new RoomDescriptionGrid2D(is_corridor, room_templates));
+            }));
 
         GlobalHelper.IterEdges(edges_Ptr, Marshal.GetFunctionPointerForDelegate<IterEdges_ProceduresDelegate>((from_node, to_node)
             => level_description.AddConnection(Marshal.PtrToStringUTF8(from_node), Marshal.PtrToStringUTF8(to_node))));

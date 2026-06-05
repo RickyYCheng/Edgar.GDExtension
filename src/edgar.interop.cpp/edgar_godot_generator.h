@@ -16,7 +16,7 @@
 using namespace godot;
 
 extern "C" {
-    void *csharp_obj_alloc_edgar_godot_generator(Dictionary *nodes, TypedArray<Dictionary> *edges, TypedArray<Dictionary> *layers, int minimum_room_distance);
+    void *csharp_obj_alloc_edgar_godot_generator(Dictionary *nodes, TypedArray<Dictionary> *edges, TypedArray<Dictionary> *layers, int minimum_room_distance, int room_template_repeat_mode_default, int room_template_repeat_mode_override);
     void csharp_obj_edgar_generator_generate(void *handle_Ptr, void *result, void *fill_room);
     void csharp_obj_edgar_generator_inject_seed(void *handle_Ptr, int seed);
 }
@@ -30,6 +30,8 @@ protected:
     TypedArray<Dictionary> _edges;
     TypedArray<Dictionary> _layers;
     int _minimum_room_distance;
+    int _room_template_repeat_mode_default;
+    int _room_template_repeat_mode_override;
 
     static void _bind_methods();
     void ensure_generator();
@@ -51,7 +53,7 @@ public:
         return this->csharp_obj_handle;
     }
 
-    static Ref<EdgarGodotGenerator> cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers, int minimum_room_distance = 0);
+    static Ref<EdgarGodotGenerator> cons(Dictionary nodes, TypedArray<Dictionary> edges, TypedArray<Dictionary> layers, int minimum_room_distance = 0, int room_template_repeat_mode_default = 2, int room_template_repeat_mode_override = -1);
 
     static Ref<EdgarGodotGenerator> from_resource(Ref<Resource> resource);
 

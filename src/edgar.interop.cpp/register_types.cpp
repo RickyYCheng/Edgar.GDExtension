@@ -74,7 +74,7 @@ void iter_door(PackedVector2Array *door, void *csharp_delegate) {
 }
 
 void iter_nodes(Dictionary *nodes, void *csharp_delegate) {
-    auto action = (void(*)(const char*, int, bool))csharp_delegate;
+    auto action = (void(*)(const char*, int, bool, int))csharp_delegate;
 
     auto keys = nodes->keys();
     auto keys_size = keys.size();
@@ -83,7 +83,8 @@ void iter_nodes(Dictionary *nodes, void *csharp_delegate) {
         Dictionary dict = (*nodes)[node];
         int layer = dict["edgar_layer"];
         bool is_corridor = dict["is_corridor_room"];
-        action(node.utf8().get_data(), layer, is_corridor);
+        int repeat_mode = dict.has("repeat_mode") ? (int)dict["repeat_mode"] : -1;
+        action(node.utf8().get_data(), layer, is_corridor, repeat_mode);
     }
 }
 
