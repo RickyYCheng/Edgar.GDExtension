@@ -60,6 +60,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
     try {
         Dictionary nodes = level->get_meta("nodes");
         TypedArray<Dictionary> edges = level->get_meta("edges");
+        int minimum_room_distance = level->get_meta("minimum_room_distance", 0);
         TypedArray<PackedStringArray> raw_layers = level->get_meta("layers");
         Dictionary cache;
         Ref<Resource> proxy = EdgarGodot::get_proxy();
@@ -88,7 +89,7 @@ Ref<EdgarGodotGenerator> EdgarGodotGenerator::from_resource(Ref<Resource> level)
             layers.push_back(result);
         }
         
-        return cons(nodes, edges, layers);
+        return cons(nodes, edges, layers, minimum_room_distance);
     } catch (...) {
         UtilityFunctions::push_error("[Edgar.GDExtension] Failed to create generator from resource");
         return nullptr;
